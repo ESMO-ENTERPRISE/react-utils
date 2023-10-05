@@ -77,4 +77,4 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 ## 📝 License
 
 Copyright © 2023 [Víctor Gómez](https://github.com/victorgomez09).<br />
-This project is [Apache-2.0](https://github.com/ESMO-ENTERPRISE/react-utils/tree/main/license) licensed.
+This project is [Apache-2.0](https://github.com/ESMO-ENTERPRISE/react-utils/tree/main/LICENSE) licensed.
