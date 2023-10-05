@@ -1,7 +1,7 @@
 import { createElement } from 'react'
 import { useNavigation } from '.'
 
-type Props = React.AnchorHTMLAttributes<HTMLAnchorElement> & { to: string, state: any }
+type Props = React.AnchorHTMLAttributes<HTMLAnchorElement> & { to: string, state?: any }
 type OnClickEvent = React.MouseEvent<HTMLAnchorElement>
 
 export function Link({ to, state, onClick, ...rest }: Props) {
