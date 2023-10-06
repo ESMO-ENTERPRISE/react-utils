@@ -1,9 +1,9 @@
-import { useI18n } from "../../../src/i18n"
+import { useEsmoI18n } from "../../../src/i18n"
 
 export function HomeView() {
-    const { i18n } = useI18n()
+    const { t } = useEsmoI18n()
 
     return (
-        <div>{i18n('hello_world')}</div>
+        <div>{t('hello_world')}</div>
     )
 }

@@ -1,5 +1,6 @@
-import { RouteSettings, createRouter } from '../../src/router'
-import { I18nProvider } from '../../src/i18n'
+import { RouteSettings, createEsmoRouter } from '../../src/router'
+import { EsmoI18nProvider } from '../../src/i18n'
+import { EsmoQueryProvider } from '../../src/fetch'
 import { routes } from './routes'
 import en from './i18n/en.json'
 import es from './i18n/es.json'
@@ -25,10 +26,11 @@ function App() {
     fallback: HomeView
   }
 
-  const [Router, RouterView] = createRouter(routeSettings);
+  const [Router, RouterView] = createEsmoRouter(routeSettings);
 
   return (
-    <I18nProvider language='es' locales={locales}>
+    <EsmoI18nProvider language='es' locales={locales}>
+      <EsmoQueryProvider>
       <Router>
         <div className='flex flex-1 flex-col'>
           <NavbarComponent />
@@ -37,7 +39,8 @@ function App() {
           </div>
         </div>
       </Router>
-    </I18nProvider>
+      </EsmoQueryProvider>
+    </EsmoI18nProvider>
   )
 }
 

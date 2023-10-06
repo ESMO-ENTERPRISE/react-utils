@@ -3,15 +3,15 @@ import { I18n } from 'vira-i18n';
 
 import { I18nContextProps, I18nProviderProps } from './types';
 
-const I18Context = createContext<I18nContextProps>({
+const esmoI18Context = createContext<I18nContextProps>({
     language: '',
     locales: [],
     
-    i18n: () => '',
+    t: () => '',
     setLanguage: () => {},
 });
 
-export const I18nProvider: FC<I18nProviderProps> = ({ language, locales, children }) => {
+const esmoI18nProvider: FC<I18nProviderProps> = ({ language, locales, children }) => {
     const [lang, setLang] = useState(language);
 
     useMemo(() => {
@@ -20,17 +20,17 @@ export const I18nProvider: FC<I18nProviderProps> = ({ language, locales, childre
 
     const translator = new I18n(lang, locales);
 
-    const i18n = (resourcesKey: string) => {
+    const t = (resourcesKey: string) => {
         return translator.i18n(resourcesKey);
     }
 
     return createElement(
-        I18Context.Provider,
+        esmoI18Context.Provider,
         {
             value: {
                 language: lang,
                 locales,
-                i18n,
+                t,
                 setLanguage: setLang,
             },
         },
@@ -38,11 +38,13 @@ export const I18nProvider: FC<I18nProviderProps> = ({ language, locales, childre
     );
 };
 
-export const useI18n = (): I18nContextProps => {
-    const context = useContext(I18Context);
+export const useEsmoI18n = (): I18nContextProps => {
+    const context = useContext(esmoI18Context);
 
     if (context === undefined)
         throw new Error('I18n context is undefined');
         
     return context;
 }
+
+export { esmoI18nProvider as EsmoI18nProvider }

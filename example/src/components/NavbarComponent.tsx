@@ -1,8 +1,8 @@
-import { useI18n } from "../../../src/i18n";
+import { useEsmoI18n } from "../../../src/i18n";
 import { Link } from "../../../src/router";
 
 export function NavbarComponent() {
-    const { i18n, language, setLanguage } = useI18n()
+    const { t, language, setLanguage } = useEsmoI18n()
 
     return (
         <header className="bg-white shadow">
@@ -18,12 +18,12 @@ export function NavbarComponent() {
                         <ul className="flex items-center gap-6 text-sm">
                             <li>
                                 <Link className="text-purple-400 transition cursor-pointer hover:text-gray-500/75" to="/form">
-                                    {i18n("navbar_form")}
+                                    {t("navbar_form")}
                                 </Link>
                             </li>
                             <li>
                                 <Link className="text-purple-400 transition cursor-pointer hover:text-gray-500/75" to="/i18n">
-                                    {i18n("navbar_i18n")}
+                                    {t("navbar_i18n")}
                                 </Link>
                             </li>
                         </ul>

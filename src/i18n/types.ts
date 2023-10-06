@@ -6,7 +6,7 @@ export interface I18nContextProps {
     locales: Array<ILocale>;
     
     setLanguage(language: string): void;
-    i18n: (resourcesKey: string) => string;
+    t: (resourcesKey: string) => string;
 }
 
 export interface I18nProviderProps {
