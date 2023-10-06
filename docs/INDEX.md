@@ -10,3 +10,4 @@ Currently *react-utils* have 2 modules:
 Modules planning:
 - **I18N** *under testing*
 - **Fetch** *under testing*
+- **Store** *under testing, need docs**

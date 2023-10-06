@@ -26,6 +26,11 @@ export function NavbarComponent() {
                                     {t("navbar_i18n")}
                                 </Link>
                             </li>
+                            <li>
+                                <Link className="text-purple-400 transition cursor-pointer hover:text-gray-500/75" to="/store">
+                                    {t("navbar_store")}
+                                </Link>
+                            </li>
                         </ul>
                     </nav>
                 </div>

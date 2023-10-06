@@ -14,7 +14,8 @@
     "path-to-regexp": "^6.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "vira-i18n": "^1.0.3"
+    "vira-i18n": "^1.0.3",
+    "zustand": "^4.4.3"
   },
   "devDependencies": {
     "@rollup/plugin-multi-entry": "^6.0.0",
