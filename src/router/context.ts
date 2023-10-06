@@ -7,13 +7,13 @@ export const routerInitialState = {
     action: 'initNavigation'
 }
 
-const RouterContext = createContext<RouterParams>({
+const routerContext = createContext<RouterParams>({
     state: routerInitialState,
     matchedRoutes: [],
     navigate: () => undefined,
     params: []
 })
 
-const { Provider, Consumer } = RouterContext
+const { Provider, Consumer } = routerContext
 
-export { Provider as RouterProvider, Consumer as RouterConsumer, RouterContext }
+export { Provider as EsmoRouterProvider, Consumer as EsmoRouterConsumer, routerContext as EsmoRouterContext }

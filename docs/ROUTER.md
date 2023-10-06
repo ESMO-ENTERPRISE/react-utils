@@ -1,11 +1,6 @@
 # Usage
 
 ```javascript
-import React from 'react'
-import { createRouter, routerEvents } from '@esmo/react-utils/router'
-import { Navbar } from './navbar'
-import { ProductsPage, ProductPage, HomePage, FallbackPage } from './pages'
-
 // Listen to route changes
 routerEvents.addListener(event => console.log(event))
 
@@ -31,7 +26,7 @@ const routes = {
 
 // Router handles the url, params etc and provides the context
 // Routes listenes to context changes and render the correct page
-const [Router, RouterView] = createRouter(routes)
+const [Router, RouterView] = createEsmoRouter(routes)
 
 export const App = () => {
   return (

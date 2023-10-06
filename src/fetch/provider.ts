@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode, createElement } from "react";
 
-export function EsmoQueryProvider({ children }: { children: ReactNode}) {
+function esmoQueryProvider({ children }: { children: ReactNode}) {
     const queryClient = new QueryClient();
     
     return createElement(
@@ -12,3 +12,5 @@ export function EsmoQueryProvider({ children }: { children: ReactNode}) {
         [children]
     );
 }
+
+export { esmoQueryProvider as EsmoQueryProvider }

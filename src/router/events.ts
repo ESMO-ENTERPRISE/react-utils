@@ -2,7 +2,7 @@ import { RouterState } from './types'
 
 type Callback = (state: RouterState & { params?: {} }) => void
 
-export class RouterEvents {
+export class EsmoRouterEvents {
   private listener: Callback[] = []
 
   dispatch(data: RouterState & { params?: {} }) {
