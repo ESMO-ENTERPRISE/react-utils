@@ -1308,6 +1308,11 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
+vira-i18n@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.npmjs.org/vira-i18n/-/vira-i18n-1.0.3.tgz"
+  integrity sha512-k0q0caIpJkOZAxfLDOySe+7dOYz731eWEStgB0i3RtTz+H9zc9u9H21MxrCdYoforeX/86lJ7AGKWqsj4nFEwQ==
+
 which@^2.0.1:
   version "2.0.2"
   resolved "https://registry.npmjs.org/which/-/which-2.0.2.tgz"

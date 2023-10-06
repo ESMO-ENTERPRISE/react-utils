@@ -1,0 +1,6 @@
+{
+    "navbar_form": "Forms",
+    "navbar_i18n": "Locale",
+    "hello_world": "Hello world!",
+    "i18n_text": "This is a paragraph to test how locale works. You can change language with the toggler in navbar and see what happend!"
+}

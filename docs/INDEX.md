@@ -3,7 +3,8 @@
 Currently *react-utils* have 2 modules:
 - [Router](ROUTER.md)
 - [Form validation](FORMS.md)
+- [I18N](I18N.md)
 
 ---
 Modules planning:
-- **I18N** *work in progress*
+- **I18N** *testing*
