@@ -1,27 +1,10 @@
-import { FormEventHandler, ForwardedRef } from 'react';
+export type ValueOf<T> = T[keyof T]
 
-export type UseFormValue = undefined | null | string | number | boolean | string[] | number[] | Record<string, unknown>;
+export type ValidationSchemaObject<Type> = Record<string, boolean | ((value: any, inputs?: Type) => string | boolean)>
 
-export interface UseFormConfigValidatorFn<T> {
-  (value: UseFormValue, data: T): string | null;
-}
+export type ValidationSchema<Type> = Partial<Record<keyof Type, ValidationSchemaObject<Type>>>
 
-export type UseFormConfig<T> = Record<keyof T, [UseFormValue, UseFormConfigValidatorFn<T>[]] | [UseFormValue]>;
-
-export type UseFormErrors<T> = Record<Partial<keyof T>, string>;
-
-export interface UseFormOptions {
-  validateOn?: 'change' | 'blur' | 'submit';
-}
-
-export interface UseForm<T> {
-  ref: ForwardedRef<HTMLFormElement>;
-  submitted: boolean;
-  valid: boolean;
-  data: T;
-  errors: UseFormErrors<T>;
-  // change: (e: Event) => void | Error;
-  // validate: () => { valid: boolean; errors: UseFormErrors<T> };
-  setData: (data: Partial<T>, replace?: boolean) => void;
-  handleSubmit: (fn: () => void) => FormEventHandler<HTMLFormElement>;
+export type UseFormTypes<Type> = {
+    defaultValues: Type
+    validation?: ValidationSchema<Type>
 }

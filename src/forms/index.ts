@@ -1,3 +1,2 @@
-export * from './form'
-export * from './validators'
-export * from './types'
+export * from './form';
+export * from './types';

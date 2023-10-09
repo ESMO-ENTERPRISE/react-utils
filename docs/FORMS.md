@@ -1,63 +1,50 @@
 # Usage
 
 ```javascript
-interface IForm {
-    email: string;
-    password: string;
-    repeatPassword: string;
-    age: number;
+type FormInputs = {
+    name: string,
+    password: string,
 };
 
-function FormComponent() {
-    // Custom age validator
-    const ageValidator = (val: UseFormValue): string | null => {
-    if (val === "") {
-        return null;
-    }
-
-    if (Number(val) < 18) {
-        return " Not 18";
-    }
-
-    return null;
-    };
-
-    const {ref, data, errors, handleSubmit} = useForm<ExampleForm>(
-        {
-            email: ['test@test.com', required('Email is required'), email()],
-            password: [required('Password is required'), minLength(8)],
-            repeatPassword: [required('Repeat password is required'), equal<ExampleForm>('password', 'Passwords must match')],
-            age: [required('Age is required'), ageValidator],
+export default function App() {
+    const { inputs, handleSubmit, errors, handleChange } = useForm({
+        defaultValues: { name: "", password: "" },
+        validation: {
+            name: {
+                required: true,
+            },
+            password: {
+                hasMoreThan6Chars: (val) =>
+                    val.length >= 6 || "Please enter 6 or more characters",
+                hasCapsChars: (val) =>
+                    /[A-Z]/.test(val) || "Please enter at least one capital letter",
+                hasLowercaseChars: (val) =>
+                    /[a-z]/.test(val) || "Please enter at least one lowercase letter",
+                hasNumChars: (val) =>
+                    /[0-9]/.test(val) || "Please enter at least one number",
+                hasSpecialChars: (val) =>
+                    /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(val) ||
+                    "Please enter at least one special character",
+            },
         },
-        {
-            validateOn: 'change',
-        });
-
-    const submit = () => {
-        // do something
-    };
+    });
+    const onSubmit = (data: FormInputs) => console.log(data);
 
     return (
-    <form ref={form.ref} onSubmit={handleSubmit}>
-        <input type="text" placeholder="Email address" name="email" />
-        <input type="password" placeholder="Password" name="password" />
-        <input type="password" placeholder="Repeat password" name="repeatPassword" />
-        <input type="number" placeholder="Age" name="age" />
-        <button type="submit">Submit</button>
-    </form>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <input
+                defaultValue="test"
+                value={inputs.name}
+                name="name"
+                onChange={handleChange}
+            />
+            {errors.name && <span>{errors.name}</span>}
+
+            <input value={inputs.password} name="password" onChange={handleChange} />
+            {errors.password && <span>{errors.password}</span>}
+
+            <input type="submit" />
+        </form>
     );
+}
 ```
-
-# Validators
-
-- ```min(minVal: number, message: string): string | null```<br />Validator that requires the control's value to be greater than or equal to the provided number.<br /><br />
-- ```max(maxVal: number, message: string): string | null```<br />Validator that requires the control's value to be less than or equal to the provided number.<br /><br />
-- ```required(message: string): string | null```<br />Validator that requires the control have a non-empty value.
-- ```requiredTrue(message: string): string | null```<br />Validator that requires the control's value be true. This validator is commonly used for required checkboxes.<br /><br />
-- ```equal(withName: string, message: string): string | null```<br />Validator that requires the control's value to be equal with other control's value. This validator is commonly used to compare passwords.<br /><br />
-- ```email(message: string): string | null```<br />Validator that requires the control's value pass an email validation test.<br /><br />
-- ```minLength(minLengh: number, message: string): string | null```<br />Validator that requires the length of the control's value to be greater than or equal to the provided minimum length.<br /><br />
-- ```maxLength(maxLength: number, message: string): string | null```<br />Validator that requires the length of the control's value to be less than or equal to the provided maximum length.<br /><br />
-- ```pattern(pattern: string | RegExp, message: string): string | null```<br />Validator that requires the control's value to match a regex pattern.<br /><br />
-- ```numeric(message: string): string | null```<br />Validator that requires the control's value pass numeric validation test.<br /><br />
-- ```decimal(message: string): string | null```<br />Validator that requires the control's value pass decimal validation test.
