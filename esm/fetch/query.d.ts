@@ -1,0 +1,2 @@
+import { QueryFunction, QueryKey, UseQueryOptions } from "@tanstack/react-query";
+export declare const useEsmoQuery: <TQueryFnData = unknown, TError = unknown, TData = TQueryFnData, TQueryKey extends QueryKey = QueryKey>(queryKey: TQueryKey, queryFn: QueryFunction<TQueryFnData, TQueryKey>) => <SelectType = TData>(options?: Omit<UseQueryOptions<TQueryFnData, TError, SelectType, TQueryKey>, "queryKey" | "queryFn"> | undefined) => import("@tanstack/react-query").UseQueryResult<SelectType, TError>;

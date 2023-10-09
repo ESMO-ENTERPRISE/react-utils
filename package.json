@@ -1,12 +1,28 @@
 {
   "name": "@esmo/react-utils",
   "version": "1.0.0",
-  "main": "./lib/index.js",
-  "module": "./lib/index.mjs",
-  "typings": "./lib/index.d.ts",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "types": "lib/index.d.ts",
+  "typings": "lib/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": {
+        "types": "./esm/index.d.ts",
+        "default": "./esm/index.js"
+      },
+      "module": "./esm/index.js",
+      "default": "./lib/index.js"
+    }
+  },
   "license": "Apache-2.0",
   "scripts": {
-    "build": "rimraf lib && rollup -c",
+    "build:cjs": "tsc -p tsconfig.prod.json",
+    "build:es": "tsc -p tsconfig.prod.json -m esNext --outDir esm",
+    "build": "pnpm clean && pnpm build:cjs && pnpm build:es",
+    "clean": "rimraf lib esm",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
@@ -31,6 +47,7 @@
     "rollup": "^3.29.4",
     "rollup-plugin-dts": "^6.0.2",
     "rollup-plugin-esbuild": "^6.0.2",
+    "tslib": "^2.6.2",
     "typescript": "^5.0.2"
   }
 }
