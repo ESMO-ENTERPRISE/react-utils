@@ -33,30 +33,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
+        with:
+          path: ./docs
         uses: actions/checkout@v3
-        working-directory: ./docs
       - name: Set up Node.js
-        uses: actions/setup-node@v3
         with:
           node-version: 16.x
           cache: yarn
-        working-directory: ./docs
+          path: ./docs
+        uses: actions/setup-node@v3
       - name: Install dependencies
+        with:
+          path: ./docs
         run: yarn install --frozen-lockfile --non-interactive
-        working-directory: ./docs
       - name: Build
+        with:
+          path: ./docs
         run: yarn build
-        working-directory: ./docs
       - name: Setup Pages
+        with:
+          path: ./docs
         uses: actions/configure-pages@v3
-        working-directory: ./docs
       - name: Upload artifact
         with:
           # Upload entire repository
           path: build
         uses: actions/upload-pages-artifact@v2
-        working-directory: ./docs
       - name: Deploy to GitHub Pages
         id: deployment
+        with:
+          path: ./docs
         uses: actions/deploy-pages@v2
-        working-directory: ./docs
