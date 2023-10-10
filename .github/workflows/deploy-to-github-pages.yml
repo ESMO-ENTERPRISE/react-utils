@@ -47,9 +47,8 @@ jobs:
           path: ./docs
         run: yarn install --frozen-lockfile --non-interactive
       - name: Build
-        with:
-          path: ./docs
         run: yarn build
+        working-directory: ./docs
       - name: Setup Pages
         with:
           path: ./docs
