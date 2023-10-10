@@ -43,9 +43,8 @@ jobs:
           path: ./docs
         uses: actions/setup-node@v3
       - name: Install dependencies
-        with:
-          path: ./docs
         run: yarn install --frozen-lockfile --non-interactive
+        working-directory: ./docs
       - name: Build
         run: yarn build
         working-directory: ./docs
