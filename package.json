@@ -7,6 +7,51 @@
   "typings": "lib/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
+    "./fetch": {
+      "types": "./lib/fetch/index.d.ts",
+      "import": {
+        "types": "./esm/fetch/index.d.ts",
+        "default": "./esm/fetch/index.js"
+      },
+      "module": "./esm/fetch/index.js",
+      "default": "./lib/fetch/index.js"
+    },
+    "./forms": {
+      "types": "./lib/forms/index.d.ts",
+      "import": {
+        "types": "./esm/forms/index.d.ts",
+        "default": "./esm/forms/index.js"
+      },
+      "module": "./esm/forms/index.js",
+      "default": "./lib/forms/index.js"
+    },
+    "./i18n": {
+      "types": "./lib/i18n/index.d.ts",
+      "import": {
+        "types": "./esm/i18n/index.d.ts",
+        "default": "./esm/i18n/index.js"
+      },
+      "module": "./esm/i18n/index.js",
+      "default": "./lib/i18n/index.js"
+    },
+    "./router": {
+      "types": "./lib/router/index.d.ts",
+      "import": {
+        "types": "./esm/router/index.d.ts",
+        "default": "./esm/router/index.js"
+      },
+      "module": "./esm/router/index.js",
+      "default": "./lib/router/index.js"
+    },
+    "./store": {
+      "types": "./lib/store/index.d.ts",
+      "import": {
+        "types": "./esm/store/index.d.ts",
+        "default": "./esm/store/index.js"
+      },
+      "module": "./esm/store/index.js",
+      "default": "./lib/store/index.js"
+    },
     ".": {
       "types": "./lib/index.d.ts",
       "import": {
@@ -45,6 +90,7 @@
     "rollup": "^3.29.4",
     "rollup-plugin-dts": "^6.0.2",
     "rollup-plugin-esbuild": "^6.0.2",
+    "tslib": "^2.6.2",
     "typescript": "^5.0.2"
   }
 }
