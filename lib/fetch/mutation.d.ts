@@ -1,2 +1,0 @@
-import { MutationFunction, MutationKey, UseMutationOptions } from "@tanstack/react-query";
-export declare const useEsmoMutation: <TMutationFnData = unknown, TError = unknown, TData = TMutationFnData, TMutationKey extends MutationKey = MutationKey, TVariables = unknown, TContext = unknown>(mutationKey: TMutationKey, mutationFn: MutationFunction<TData, TVariables>) => (options?: Omit<UseMutationOptions<TData, TError, TVariables, TContext>, "mutationFn"> | undefined) => import("@tanstack/react-query").UseMutationResult<TData, TError, TVariables, TContext>;

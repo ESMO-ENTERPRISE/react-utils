@@ -1,0 +1,24 @@
+---
+sidebar_position: 3
+---
+
+# Interception
+
+```js
+const useCatStore = createStore(
+  ({ set }) => ({
+    age: 0,
+    isSleeping: false,
+    increaseAge: () => set((state) => ({ age: state.age + 1 })),
+    reset: () => set({ age: 0, isSleeping: false }),
+  }),
+  {
+    intercept: (nextState, prevState) => {
+      if (nextState.age !== prevState.age) {
+        return { ...nextState, isSleeping: false };
+      }
+      return nextState;
+    },
+  },
+);
+```

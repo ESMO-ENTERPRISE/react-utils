@@ -1,0 +1,26 @@
+---
+sidebar_position: 5
+---
+
+# Silent Update
+
+Set the state **silently** (without broadcast the state change to **any subscribers**).
+
+```jsx
+const useCatStore = createStore(({ set }) => ({
+  age: 0,
+  isSleeping: false,
+  increaseAge: () => set((state) => ({ age: state.age + 1 })),
+  reset: () => set({ age: 0, isSleeping: false }),
+}));
+
+const decreaseAgeSilently = () => {
+  useCatStore.set((state) => ({ age: state.age }), true);
+  //                                               ^silent param
+};
+//                👇 Will not re-render
+function Cat() {
+  const { age } = useCatStore((state) => [state.age]);
+  return <div>Cat's age: {age}</div>;
+}
+```

@@ -1,0 +1,58 @@
+---
+sidebar_position: 6
+---
+
+# As Local Storage
+
+Want a local state instead of global state?
+Or, want to set the initial state inside component?
+
+```jsx
+const [CatStoreProvider, useCatStoreContext] = withContext(() =>
+  createStore(({ set }) => ({
+    age: 0,
+    isSleeping: false,
+    increaseAge: () => set((state) => ({ age: state.age + 1 })),
+    reset: () => set({ age: 0, isSleeping: false }),
+  })),
+);
+
+function Parent() {
+  return (
+    <>
+      <CatStoreProvider>
+        <CatAge />
+        <CatIsSleeping />
+        <WillNotReRenderAsCatStateChanged />
+      </CatStoreProvider>
+
+      <CatStoreProvider>
+        <CatAge />
+        <CatIsSleeping />
+        <WillNotReRenderAsCatStateChanged />
+      </CatStoreProvider>
+
+      <CatStoreProvider onInitialize={(store) => store.set({ age: 99 })}>
+        <CatAge />
+        <CatIsSleeping />
+        <WillNotReRenderAsCatStateChanged />
+      </CatStoreProvider>
+    </>
+  );
+}
+
+function CatAge() {
+  const { age } = useCatStoreContext()((state) => [state.age]);
+  return <div>Age: {age}</div>;
+}
+function CatIsSleeping() {
+  const useCatStore = useCatStoreContext();
+  const { isSleeping } = useCatStore((state) => [state.isSleeping]);
+  return (
+    <>
+      <div>Is Sleeping: {String(isSleeping)}</div>
+      <button onClick={useCatStore.get().increaseAge}>Increase cat age</button>
+    </>
+  );
+}
+```

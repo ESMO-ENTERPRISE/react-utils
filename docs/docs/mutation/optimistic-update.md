@@ -1,0 +1,35 @@
+---
+sidebar_position: 4
+---
+
+# Optimistic Update
+
+```jsx {11-14}
+function SaveProduct() {
+  const { mutate, isWaiting } = useEditProductMutation();
+  const { getValues } = useFormContext();
+
+  return (
+    <button
+      disabled={isWaiting}
+      onClick={() => {
+        const payload = getValues();
+
+        const { revert, invalidate } = useProductQuery.optimisticUpdate({
+          key: { id: payload.id },
+          response: payload,
+        });
+
+        mutate(payload).then(({ response, error }) => {
+          if (error) {
+            revert();
+          }
+          invalidate();
+        });
+      }}
+    >
+      Save
+    </button>
+  );
+}
+```

@@ -1,0 +1,43 @@
+---
+sidebar_position: 10
+---
+
+# Stores Event
+
+Since the concept of stores is same as [store](/docs/store/introduction), it also have a store event handler.
+We can use `onFirstSubscribe`, `onSubscribe`, `onUnsubscribe`, `onLastUnsubscribe`,
+and additional `onBeforeChangeKey` & `onStoreInitialized` event handler.
+
+```ts {10-15}
+const useCatStores = createStores(
+  ({ set }) => ({
+    age: 0,
+    isSleeping: false,
+    increaseAge: () => set((state) => ({ age: state.age + 1 })),
+    reset: () => set({ age: 0, isSleeping: false }),
+  }),
+  {
+    // New
+    onBeforeChangeKey: (nextKey, prevKey) => {
+      console.log('Store key changed', nextKey, prevKey);
+    },
+    onStoreInitialized: (key, keyHash) => {
+      console.log('Store with a specific key was initialized', key, keyHash);
+    },
+
+   // Same as createStore
+    onFirstSubscribe: (state) => {
+      console.log('onFirstSubscribe', state);
+    },
+    onSubscribe: (state) => {
+      console.log('onSubscribe', state);
+    },
+    onUnsubscribe: (state) => {
+      console.log('onUnsubscribe', state);
+    },
+    onLastUnsubscribe: (state) => {
+      console.log('onLastUnsubscribe', state);
+    },
+  },
+);
+```

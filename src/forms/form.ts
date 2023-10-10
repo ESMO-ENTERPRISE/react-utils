@@ -148,5 +148,3 @@ export const useForm = <Type>({ defaultValues, validation }: UseFormTypes<Type>)
         getFieldProps,
     }
 }
-
-export default useForm
