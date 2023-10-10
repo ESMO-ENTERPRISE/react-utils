@@ -51,15 +51,6 @@
       },
       "module": "./esm/store/index.js",
       "default": "./lib/store/index.js"
-    },
-    ".": {
-      "types": "./lib/index.d.ts",
-      "import": {
-        "types": "./esm/index.d.ts",
-        "default": "./esm/index.js"
-      },
-      "module": "./esm/index.js",
-      "default": "./lib/index.js"
     }
   },
   "license": "Apache-2.0",
