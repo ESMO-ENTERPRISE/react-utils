@@ -12,7 +12,7 @@ We need a query state for each pokemon name.
 There should be a possibility where the "charmander" pokemon query is still fetching,
 the "squirtle" pokemon query data has been fetched, and the "bulbasaur" pokemon query needs to be reset.
 
-To achieve this, we use [store key](/docs/stores/introduction) like what we have learned before.
+To achieve this, we use [store key](/docs/store/introduction) like what we have learned before.
 The query function will receive the store key as its parameter.
 
 

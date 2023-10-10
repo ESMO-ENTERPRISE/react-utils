@@ -77,9 +77,9 @@ const state = useStores(selectDeps);
 
 - `initializer` A function that returns an initial single store state
 - `options?` (_optional_)
-  - `hashKeyFn" href="stores/introduction#store-key" /> Custom function to transform the store key (object) into a hash string ([learn more](/docs/stores/introduction#store-key))
-  - `onBeforeChangeKey" href="stores/stores-event" /> Handle change key passed to the hook
-  - `onStoreInitialized" href="stores/stores-event" /> Handle single store state initialized event
+  - `hashKeyFn` Custom function to transform the store key (object) into a hash string ([learn more](/docs/store/introduction#store-key))
+  - `onBeforeChangeKey` Handle change key passed to the hook
+  - `onStoreInitialized` Handle single store state initialized event
   - _... same as `useStore`'s_
 
 </div>
@@ -91,7 +91,7 @@ const state = useStores(selectDeps);
 - `useStores()`
 
   - **Parameters** (_optional_)
-    - `storeKey` Choose which store state will be used ([learn more](/docs/stores/introduction#store-key))
+    - `storeKey` Choose which store state will be used ([learn more](/docs/store/introduction#store-key))
     - `selectDeps` Customize when to re-render
   - **Return Value**
     - `state`
@@ -169,7 +169,7 @@ const state = useQuery(selectDeps);
 - `useQuery()`
 
   - **Parameters** (_optional_)
-    - `storeKey` Choose which query store state will be used ([learn more](/docs/stores/introduction#store-key))
+    - `storeKey` Choose which query store state will be used ([learn more](/docs/store/introduction#store-key))
     - `selectDeps` Customize when to re-render
   - **Return Value**
     - `state`
