@@ -15,11 +15,3 @@ export default function ProductPage({ productId, referrer, theme }) {
     });
   }, [productId, referrer]);
 ```
-
-```ts
-// custom validator
-password: {
-  hasMoreThan6Chars: (val) =>
-    val.length >= 6 || "Please enter 6 or more characters",
-}
-```

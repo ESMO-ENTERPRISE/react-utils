@@ -39,7 +39,7 @@ A set of React utils, like router, form validator
 ### 🏠 [Homepage](https://github.com/ESMO-ENTERPRISE/react-utils)
 
 
-### ✨ [Demo](https://github.com/ESMO-ENTERPRISE/react-utils/tree/main/example)
+### ✨ [Docs](https://esmo-enterprise.github.io/react-utils/docs/intro)
 
 ## Prerequisites
 
@@ -64,7 +64,7 @@ pnpm i @esmo/react-utils
 
 ## Usage
 
-See the specific documentation for each [module](https://github.com/ESMO-ENTERPRISE/react-utils/tree/main/docs).
+See the specific documentation for each [module](https://esmo-enterprise.github.io/react-utils/docs/intro).
 
 ## Author
 👤 **Víctor Gómez**
