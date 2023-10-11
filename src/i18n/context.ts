@@ -47,4 +47,4 @@ export const useI18n = (): I18nContextProps => {
     return context;
 }
 
-export { i18nProvider }
+export { i18nProvider as I18nProvider }

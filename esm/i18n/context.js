@@ -30,4 +30,4 @@ export const useI18n = () => {
         throw new Error('I18n context is undefined');
     return context;
 };
-export { i18nProvider };
+export { i18nProvider as I18nProvider };
