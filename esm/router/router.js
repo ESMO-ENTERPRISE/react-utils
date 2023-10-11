@@ -1,9 +1,9 @@
 import { Fragment, createElement, memo, useCallback, useContext, useEffect, useState } from "react";
-import { EsmoRouterEvents } from "./events";
+import { RouterEvents } from "./events";
 import { matchRoutes } from "./utils";
-import { EsmoRouterContext, EsmoRouterProvider, routerInitialState } from "./context";
-const routerEvents = new EsmoRouterEvents();
-function createEsmoRouter(settings) {
+import { RouterContext, RouterProvider, routerInitialState } from "./context";
+const routerEvents = new RouterEvents();
+function createRouter(settings) {
     const Router = memo(function Router({ children }) {
         const [routerState, setRouterState] = useState(() => {
             const state = routerInitialState;
@@ -41,7 +41,7 @@ function createEsmoRouter(settings) {
             handleRouteChange(url, undefined, state, 'navigate');
             window.history.pushState(state, '', url);
         }, [handleRouteChange]);
-        return createElement(EsmoRouterProvider, {
+        return createElement(RouterProvider, {
             value: {
                 state: routerState.state,
                 navigate,
@@ -51,7 +51,7 @@ function createEsmoRouter(settings) {
         }, [children]);
     });
     const RouterView = memo(function Routes({ children }) {
-        const context = useContext(EsmoRouterContext);
+        const context = useContext(RouterContext);
         if (!context || !context.navigate) {
             throw new Error('The <Routes>-component needs to be wrapped inside a <Router>-component');
         }
@@ -68,8 +68,8 @@ function createElements(matchedRoutes) {
         key: idx,
     }));
 }
-function useEsmoNavigation() {
-    const context = useContext(EsmoRouterContext);
+function useNavigation() {
+    const context = useContext(RouterContext);
     if (!context || !context.navigate) {
         throw new Error('In order to use useNavigation, the component needs to be a child to the <Router>-component');
     }
@@ -79,4 +79,4 @@ function useEsmoNavigation() {
         params: context.params,
     };
 }
-export { createEsmoRouter, useEsmoNavigation, routerEvents };
+export { createRouter, useNavigation, routerEvents };

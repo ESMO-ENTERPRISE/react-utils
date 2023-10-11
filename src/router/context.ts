@@ -16,4 +16,4 @@ const routerContext = createContext<RouterParams>({
 
 const { Provider, Consumer } = routerContext
 
-export { Provider as EsmoRouterProvider, Consumer as EsmoRouterConsumer, routerContext as EsmoRouterContext }
+export { Provider as RouterProvider, Consumer as RouterConsumer, routerContext as RouterContext }

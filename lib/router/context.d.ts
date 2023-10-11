@@ -7,4 +7,4 @@ export declare const routerInitialState: {
 };
 declare const routerContext: import("react").Context<RouterParams>;
 declare const Provider: import("react").Provider<RouterParams>, Consumer: import("react").Consumer<RouterParams>;
-export { Provider as EsmoRouterProvider, Consumer as EsmoRouterConsumer, routerContext as EsmoRouterContext };
+export { Provider as RouterProvider, Consumer as RouterConsumer, routerContext as RouterContext };

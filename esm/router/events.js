@@ -1,4 +1,4 @@
-export class EsmoRouterEvents {
+export class RouterEvents {
     constructor() {
         this.listener = [];
     }

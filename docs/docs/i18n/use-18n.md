@@ -7,7 +7,7 @@ sidebar_position: 3
 With i18n custom hook you can get values from resources files based on locale, and change current locale.
 
 ```ts
-const { t, language, setLanguage } = useEsmoI18n()
+const { t, language, setLanguage } = useI18n()
 
 return (
     // ...

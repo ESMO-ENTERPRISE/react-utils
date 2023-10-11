@@ -1,13 +1,13 @@
 import { Fragment, createElement, memo, useCallback, useContext, useEffect, useState } from "react";
 
-import { EsmoRouterEvents } from "./events";
+import { RouterEvents } from "./events";
 import { MatchedRoute, NavigationActionType, RouteSettings, RouterType, RoutesType, UseNavigation } from "./types";
 import { matchRoutes } from "./utils";
-import { EsmoRouterContext, EsmoRouterProvider, routerInitialState } from "./context";
+import { RouterContext, RouterProvider, routerInitialState } from "./context";
 
-const routerEvents = new EsmoRouterEvents();
+const routerEvents = new RouterEvents();
 
-function createEsmoRouter(settings: RouteSettings): [RouterType, RoutesType] {
+function createRouter(settings: RouteSettings): [RouterType, RoutesType] {
     const Router = memo(function Router({ children }: { children: React.ReactNode }) {
         const [routerState, setRouterState] = useState(() => {
             const state = routerInitialState;
@@ -62,7 +62,7 @@ function createEsmoRouter(settings: RouteSettings): [RouterType, RoutesType] {
         );
 
         return createElement(
-            EsmoRouterProvider,
+            RouterProvider,
             {
                 value: {
                     state: routerState.state,
@@ -76,7 +76,7 @@ function createEsmoRouter(settings: RouteSettings): [RouterType, RoutesType] {
     })
 
     const RouterView = memo(function Routes({ children }: { children?: React.ReactNode }) {
-        const context = useContext(EsmoRouterContext)
+        const context = useContext(RouterContext)
         if (!context || !context.navigate) {
             throw new Error('The <Routes>-component needs to be wrapped inside a <Router>-component')
         }
@@ -100,8 +100,8 @@ function createElements(matchedRoutes: MatchedRoute[]) {
     );
 }
 
-function useEsmoNavigation<PropsType = any, StateType = any>(): UseNavigation<PropsType, StateType> {
-    const context = useContext(EsmoRouterContext);
+function useNavigation<PropsType = any, StateType = any>(): UseNavigation<PropsType, StateType> {
+    const context = useContext(RouterContext);
     if (!context || !context.navigate) {
         throw new Error(
             'In order to use useNavigation, the component needs to be a child to the <Router>-component'
@@ -115,4 +115,4 @@ function useEsmoNavigation<PropsType = any, StateType = any>(): UseNavigation<Pr
     }
 }
 
-export { createEsmoRouter, useEsmoNavigation, routerEvents }
+export { createRouter, useNavigation, routerEvents }

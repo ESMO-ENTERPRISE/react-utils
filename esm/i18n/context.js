@@ -1,12 +1,12 @@
 import { createContext, createElement, useContext, useMemo, useState } from 'react';
 import { I18n } from 'vira-i18n';
-const esmoI18Context = createContext({
+const i18nContext = createContext({
     language: '',
     locales: [],
     t: () => '',
     setLanguage: () => { },
 });
-const esmoI18nProvider = ({ language, locales, children }) => {
+const i18nProvider = ({ language, locales, children }) => {
     const [lang, setLang] = useState(language);
     useMemo(() => {
         setLang(language);
@@ -15,7 +15,7 @@ const esmoI18nProvider = ({ language, locales, children }) => {
     const t = (resourcesKey) => {
         return translator.i18n(resourcesKey);
     };
-    return createElement(esmoI18Context.Provider, {
+    return createElement(i18nContext.Provider, {
         value: {
             language: lang,
             locales,
@@ -24,10 +24,10 @@ const esmoI18nProvider = ({ language, locales, children }) => {
         },
     }, [children]);
 };
-export const useEsmoI18n = () => {
-    const context = useContext(esmoI18Context);
+export const useI18n = () => {
+    const context = useContext(i18nContext);
     if (context === undefined)
         throw new Error('I18n context is undefined');
     return context;
 };
-export { esmoI18nProvider as EsmoI18nProvider };
+export { i18nProvider };

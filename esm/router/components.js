@@ -1,7 +1,7 @@
 import { createElement } from 'react';
-import { useEsmoNavigation } from '.';
+import { useNavigation } from '.';
 export function Link({ to, state, onClick, ...rest }) {
-    const { navigate } = useEsmoNavigation();
+    const { navigate } = useNavigation();
     const onLinkClick = (event) => {
         event.preventDefault();
         onClick?.(event);

@@ -3,7 +3,7 @@ import { I18n } from 'vira-i18n';
 
 import { I18nContextProps, I18nProviderProps } from './types';
 
-const esmoI18Context = createContext<I18nContextProps>({
+const i18nContext = createContext<I18nContextProps>({
     language: '',
     locales: [],
     
@@ -11,7 +11,7 @@ const esmoI18Context = createContext<I18nContextProps>({
     setLanguage: () => {},
 });
 
-const esmoI18nProvider: FC<I18nProviderProps> = ({ language, locales, children }) => {
+const i18nProvider: FC<I18nProviderProps> = ({ language, locales, children }) => {
     const [lang, setLang] = useState(language);
 
     useMemo(() => {
@@ -25,7 +25,7 @@ const esmoI18nProvider: FC<I18nProviderProps> = ({ language, locales, children }
     }
 
     return createElement(
-        esmoI18Context.Provider,
+        i18nContext.Provider,
         {
             value: {
                 language: lang,
@@ -38,8 +38,8 @@ const esmoI18nProvider: FC<I18nProviderProps> = ({ language, locales, children }
     );
 };
 
-export const useEsmoI18n = (): I18nContextProps => {
-    const context = useContext(esmoI18Context);
+export const useI18n = (): I18nContextProps => {
+    const context = useContext(i18nContext);
 
     if (context === undefined)
         throw new Error('I18n context is undefined');
@@ -47,4 +47,4 @@ export const useEsmoI18n = (): I18nContextProps => {
     return context;
 }
 
-export { esmoI18nProvider as EsmoI18nProvider }
+export { i18nProvider }

@@ -1,11 +1,11 @@
 import { createElement } from 'react'
-import { useEsmoNavigation } from '.'
+import { useNavigation } from '.'
 
 type Props = React.AnchorHTMLAttributes<HTMLAnchorElement> & { to: string, state?: any }
 type OnClickEvent = React.MouseEvent<HTMLAnchorElement>
 
 export function Link({ to, state, onClick, ...rest }: Props) {
-  const { navigate } = useEsmoNavigation();
+  const { navigate } = useNavigation();
   const onLinkClick = (event: OnClickEvent) => {
     event.preventDefault();
     onClick?.(event);

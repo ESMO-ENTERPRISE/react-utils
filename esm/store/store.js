@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { hashStoreKey, noop } from './utils';
-import { initStore, } from './subscribe';
+import { initStore } from './subscribe';
 // Create store
 export const createStore = (initializer, options = {}) => {
     const { get, set, subscribe, getSubscribers } = initStore(initializer, options);

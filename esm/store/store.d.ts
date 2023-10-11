@@ -1,11 +1,6 @@
 import { Maybe } from './utils';
-import { InitStoreOptions, InitStoreReturn, SelectDeps, SetStoreData, StoreData, StoreInitializer, Subscribers } from './subscribe';
-export type StoreKey = Record<string, any> | undefined;
-export type WatchProps<T> = {
-    selectDeps?: SelectDeps<T>;
-    render: (state: T) => any;
-};
-export type UseStore<T extends StoreData> = {
+import { InitStoreOptions, InitStoreReturn, SelectDeps, SetStoreData, StoreDataRecord, StoreInitializer, StoreKey, Subscribers, WatchProps } from './types';
+export type UseStore<T extends StoreDataRecord> = {
     /**
      * @param selectDeps A function that return the dependency array (just like in `useEffect`), to trigger reactivity.
      * Defaults to `undefined` (reactive to all state change) if you didn't set `defaultDeps` on `createStore`.
@@ -25,16 +20,16 @@ export type UseStore<T extends StoreData> = {
     setDefaultValues: (values: SetStoreData<T>) => void;
     Watch: (props: WatchProps<T>) => any;
 };
-export declare const createStore: <T extends StoreData>(initializer: StoreInitializer<T>, options?: InitStoreOptions<T> & {
+export declare const createStore: <T extends StoreDataRecord>(initializer: StoreInitializer<T>, options?: InitStoreOptions<T> & {
     defaultDeps?: SelectDeps<T>;
 }) => UseStore<T>;
-export type StoresInitializer<TKey extends StoreKey = StoreKey, T extends StoreData = StoreData> = (api: {
+export type StoresInitializer<TKey extends StoreKey = StoreKey, T extends StoreDataRecord = StoreDataRecord> = (api: {
     get: () => T;
     set: (value: SetStoreData<T>, silent?: boolean) => void;
     key: TKey;
     keyHash: string;
 }) => T;
-export type UseStores<TKey extends StoreKey = StoreKey, T extends StoreData = StoreData> = {
+export type UseStores<TKey extends StoreKey = StoreKey, T extends StoreDataRecord = StoreDataRecord> = {
     /**
      * @param key (Optional) Store key, an object that will be hashed into a string as a store identifier.
      *
@@ -63,7 +58,7 @@ export type UseStores<TKey extends StoreKey = StoreKey, T extends StoreData = St
         storeKey?: Maybe<TKey>;
     }) => any;
 };
-export type CreateStoresOptions<TKey extends StoreKey = StoreKey, T extends StoreData = StoreData> = InitStoreOptions<T> & {
+export type CreateStoresOptions<TKey extends StoreKey = StoreKey, T extends StoreDataRecord = StoreDataRecord> = InitStoreOptions<T> & {
     onBeforeChangeKey?: (nextKey: TKey, prevKey: TKey) => void;
     /**
      * Will be triggered when a single store with a specific key was initialized.
@@ -72,4 +67,4 @@ export type CreateStoresOptions<TKey extends StoreKey = StoreKey, T extends Stor
     defaultDeps?: SelectDeps<T>;
     hashKeyFn?: (obj: TKey) => string;
 };
-export declare const createStores: <TKey extends StoreKey = StoreKey, T extends StoreData = StoreData>(initializer: StoresInitializer<TKey, T>, options?: CreateStoresOptions<TKey, T>) => UseStores<TKey, T>;
+export declare const createStores: <TKey extends StoreKey = StoreKey, T extends StoreDataRecord = StoreDataRecord>(initializer: StoresInitializer<TKey, T>, options?: CreateStoresOptions<TKey, T>) => UseStores<TKey, T>;

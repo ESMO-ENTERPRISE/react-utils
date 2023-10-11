@@ -20,16 +20,16 @@ const locales: ILocale[] = [
 ]
 
 return (
-    <EsmoI18nProvider language='en' locales={locales}>
+    <I18nProvider language='en' locales={locales}>
       // Other components
-    </EsmoI18nProvider>
+    </I18nProvider>
 )
 ```
 
 ```ts
 // Navbar component
 export function NavbarComponent() {
-    const { t, language, setLanguage } = useEsmoI18n()
+    const { t, language, setLanguage } = useI18n()
 
     return (
         // ...
@@ -39,7 +39,7 @@ export function NavbarComponent() {
 
 ```javascript
 // Some component
-const { t } = useEsmoI18n()
+const { t } = useI18n()
 
 return (
   <h1>t("example_text")</h1>

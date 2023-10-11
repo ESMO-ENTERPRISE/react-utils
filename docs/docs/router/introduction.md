@@ -32,7 +32,7 @@ const routes = {
 
 // Router handles the url, params etc and provides the context
 // RouterView listenes to context changes and render the correct page
-const [Router, RouterView] = createEsmoRouter(routes)
+const [Router, RouterView] = createRouter(routes)
 
 export const App = () => {
   return (
