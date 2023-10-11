@@ -51,6 +51,15 @@
       },
       "module": "./esm/store/index.js",
       "default": "./lib/store/index.js"
+    },
+    "./hooks": {
+      "types": "./lib/hooks/index.d.ts",
+      "import": {
+        "types": "./esm/hooks/index.d.ts",
+        "default": "./esm/hooks/index.js"
+      },
+      "module": "./esm/hooks/index.js",
+      "default": "./lib/hooks/index.js"
     }
   },
   "license": "Apache-2.0",
