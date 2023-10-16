@@ -5,41 +5,18 @@ sidebar_position: 1
 # Introduction
 
 ## Create router
+Wrap your application with a router: `BrowserRouter`, `BrowserHashRouter`, or `MemoryRouter`.
 
 ```ts
-// Listen to route changes
-routerEvents.addListener(event => console.log(event))
-
-// Specify routes and fallback
-const routes = {
-  fallback: FallbackPage,
-  routes: [
-    {
-      path: '/',
-      exact: true,
-      component: HomePage
-    },
-    {
-      path: '/products',
-      component: ProductsPage
-    },
-    {
-      path: '/products/:id',
-      component: ProductPage
-    }
-  ]
-}
-
-// Router handles the url, params etc and provides the context
-// RouterView listenes to context changes and render the correct page
-const [Router, RouterView] = createRouter(routes)
-
-export const App = () => {
-  return (
-    <Router>
-      <Navbar />
-      <RouterView />
-    </Router>
-  )
-}
+return (
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>
+)
 ```
+
+Any component or hook which depends on a router, will throw an error if no router parent is present.
+
+The `BrowserHashRouter` is useful when the application's server does not support SPAs (eg. GitHub Pages). An SPA-compatible server will serve the application index file when a non-existent path is requested.
+
+The `MemoryRouter` is useful for SSR and testing, when there is no window global.
