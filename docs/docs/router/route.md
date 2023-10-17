@@ -38,4 +38,4 @@ const match = useRoute('/foo');
 const match = useRoute(['/foo', '/bar']);
 ```
 
-The returned match will be `null` if the route is not matched, or an object containing [match data](/docs/match-data) if the route is matched.
+The returned match will be `null` if the route is not matched, or an object containing [match data](/docs/router/match-data) if the route is matched.
