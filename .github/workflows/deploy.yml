@@ -40,6 +40,7 @@ jobs:
             ${{ runner.os }}-website-
 
       - run: yarn install --frozen-lockfile
+      - run: yarn clear
       - run: yarn build
 
       - name: Deploy
