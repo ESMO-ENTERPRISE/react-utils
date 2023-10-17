@@ -12,4 +12,3 @@ export * from './use-navigate';
 export * from './use-route';
 export * from './use-route-match';
 export * from './use-router';
-export * from './types';
