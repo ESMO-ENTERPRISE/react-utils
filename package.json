@@ -7,14 +7,14 @@
   "typings": "lib/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
-    "./fetch": {
-      "types": "./lib/fetch/index.d.ts",
+    "./state": {
+      "types": "./lib/state/index.d.ts",
       "import": {
-        "types": "./esm/fetch/index.d.ts",
-        "default": "./esm/fetch/index.js"
+        "types": "./esm/state/index.d.ts",
+        "default": "./esm/state/index.js"
       },
-      "module": "./esm/fetch/index.js",
-      "default": "./lib/fetch/index.js"
+      "module": "./esm/state/index.js",
+      "default": "./lib/state/index.js"
     },
     "./forms": {
       "types": "./lib/forms/index.d.ts",
