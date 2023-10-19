@@ -1,7 +1,17 @@
-export type ValueOf<T> = T[keyof T];
-export type ValidationSchemaObject<Type> = Record<string, boolean | ((value: any, inputs?: Type) => string | boolean)>;
-export type ValidationSchema<Type> = Partial<Record<keyof Type, ValidationSchemaObject<Type>>>;
-export type UseFormTypes<Type> = {
-    defaultValues: Type;
-    validation?: ValidationSchema<Type>;
+import { Path } from "../object-path/types";
+export type StandardFieldRef = {
+    focus: () => void;
 };
+export type StandardFieldProps<T = any> = {
+    value: T;
+    onChange: (value: T) => void;
+    onBlur?: () => void;
+    ref?: any;
+};
+export type CovertToStandardFieldProps<T, P = any> = Override<T, StandardFieldProps<P>>;
+export type FormErrors<T extends object> = Map<Path<T>, any>;
+export type FormFieldRefs<T extends object> = {
+    [K in Path<T>]?: any;
+};
+export type PromiseAble<T> = T | Promise<T>;
+export type Override<T, P> = Omit<T, keyof P> & P;
