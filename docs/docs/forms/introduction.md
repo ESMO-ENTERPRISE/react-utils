@@ -4,51 +4,37 @@ sidebar_position: 1
 
 # Introduction
 
-```ts
-type FormInputs = {
-  name: string,
-  password: string,
+A form state manage library, which is simple, easy to use and powerful!
+
+## Example
+
+```tsx
+// define your form values type
+type FormValues = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
 };
 
-export default function App() {
-  const { inputs, handleSubmit, errors, handleChange } = useForm({
-    defaultValues: { name: "", password: "" },
-    validation: {
-      name: {
-        required: true,
-      },
-      password: {
-        hasMoreThan6Chars: (val) =>
-          val.length >= 6 || "Please enter 6 or more characters",
-        hasCapsChars: (val) =>
-          /[A-Z]/.test(val) || "Please enter at least one capital letter",
-        hasLowercaseChars: (val) =>
-          /[a-z]/.test(val) || "Please enter at least one lowercase letter",
-        hasNumChars: (val) =>
-          /[0-9]/.test(val) || "Please enter at least one number",
-        hasSpecialChars: (val) =>
-          /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(val) ||
-          "Please enter at least one special character",
-      },
+export const App = () => {
+  const { field, submit } = useForm<FormValues>({
+    // handle form submit
+    onSubmit: (values: FormValues) => {
+      alert(JSON.stringify(values));
     },
   });
-  const onSubmit = (data: FormInputs) => console.log(data);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input
-        defaultValue="test"
-        value={inputs.name}
-        name="name"
-        onChange={handleChange}
-      />
-      {errors.name && <span>{errors.name}</span>}
-    
-      <input value={inputs.password} name="password" onChange={handleChange} />
-      {errors.password && <span>{errors.password}</span>}
-
-      <input type="submit" />
-    </form>
+    <div>
+      <h2>Example Form</h2>
+      <form onSubmit={submit}>
+        {/* use built-in native wrapper for native elements */}
+        <input {...native(field('firstName'))} placeholder="First name" />
+        <input {...native(field('lastName'))} placeholder="Last name" />
+        <input {...native(field('email'))} placeholder="Email" />
+        <button>Submit</button>
+      </form>
+    </div>
   );
-}
+};
 ```
