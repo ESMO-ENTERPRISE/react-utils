@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { MutatorFunType } from "./types";
 
-export type MutationCallbacksType<MutatorInput, ReturnedData, Context> = {
+export type MutationCallbacksType<MutatorInput, ReturnedData, ErrorResponse, Context> = {
     onSuccess?: (data: ReturnedData | null | undefined, context: Context) => void;
     onError?: (
         err: Error,
-        data: ReturnedData | null | undefined,
+        data: ErrorResponse | null | undefined,
         context: Context
     ) => void;
     onSettled?: (
@@ -25,10 +25,11 @@ export type MutationCallbacksType<MutatorInput, ReturnedData, Context> = {
 export const useMutation = <
     MutatorInput = any,
     ReturnedData = any,
+    ErrorResponse = any,
     Context = any
 >(
-    mutator: MutatorFunType<ReturnedData>,
-    callbacks?: MutationCallbacksType<MutatorInput, ReturnedData, Context>
+    mutator: MutatorFunType<MutatorInput>,
+    callbacks?: MutationCallbacksType<MutatorInput, ReturnedData, ErrorResponse, Context>
 ) => {
     const [status, setStatus] = useState({
         isMutating: false,
@@ -40,7 +41,7 @@ export const useMutation = <
 
     const { onSuccess, onError, onSettled, onMutate } = callbacks || {};
 
-    const mutate = async (newData: any) => {
+    const mutate = async (newData: MutatorInput) => {
         setStatus({ isMutating: true, isSuccess: false, isError: false });
 
         if (!status.isMutating) {
@@ -59,12 +60,12 @@ export const useMutation = <
                 isError = true;
                 error = err as Error | null;
                 typeof onError === "function" &&
-                    onError(error as Error, newData, context);
+                    onError(error as Error, error as ErrorResponse, context);
             } finally {
                 setError(error);
                 setStatus({ isMutating: false, isError, isSuccess: !isError });
                 setData(data);
-                typeof onSettled === "function" && onSettled(newData, error, context);
+                typeof onSettled === "function" && onSettled(data, error, context);
             }
         }
     };

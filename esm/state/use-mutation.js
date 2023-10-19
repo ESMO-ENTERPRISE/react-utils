@@ -32,13 +32,13 @@ export const useMutation = (mutator, callbacks) => {
                 isError = true;
                 error = err;
                 typeof onError === "function" &&
-                    onError(error, newData, context);
+                    onError(error, error, context);
             }
             finally {
                 setError(error);
                 setStatus({ isMutating: false, isError, isSuccess: !isError });
                 setData(data);
-                typeof onSettled === "function" && onSettled(newData, error, context);
+                typeof onSettled === "function" && onSettled(data, error, context);
             }
         }
     };

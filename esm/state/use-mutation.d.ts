@@ -1,7 +1,7 @@
 import { MutatorFunType } from "./types";
-export type MutationCallbacksType<MutatorInput, ReturnedData, Context> = {
+export type MutationCallbacksType<MutatorInput, ReturnedData, ErrorResponse, Context> = {
     onSuccess?: (data: ReturnedData | null | undefined, context: Context) => void;
-    onError?: (err: Error, data: ReturnedData | null | undefined, context: Context) => void;
+    onError?: (err: Error, data: ErrorResponse | null | undefined, context: Context) => void;
     onSettled?: (data: ReturnedData | null | undefined, err: Error | null, context: Context) => void;
     onMutate?: (newData: MutatorInput) => Promise<Context>;
 };
@@ -11,9 +11,9 @@ export type MutationCallbacksType<MutatorInput, ReturnedData, Context> = {
  * @param {*} callbacks an object that contains callback methods such as onSuccess, onError, onSettled and onMutate
  * @returns
  */
-export declare const useMutation: <MutatorInput = any, ReturnedData = any, Context = any>(mutator: MutatorFunType<ReturnedData>, callbacks?: MutationCallbacksType<MutatorInput, ReturnedData, Context> | undefined) => Readonly<{
+export declare const useMutation: <MutatorInput = any, ReturnedData = any, ErrorResponse = any, Context = any>(mutator: MutatorFunType<MutatorInput>, callbacks?: MutationCallbacksType<MutatorInput, ReturnedData, ErrorResponse, Context> | undefined) => Readonly<{
     error: Error | null;
-    mutate: (newData: any) => Promise<void>;
+    mutate: (newData: MutatorInput) => Promise<void>;
     isMutating: boolean;
     isSuccess: boolean;
     isError: boolean;
