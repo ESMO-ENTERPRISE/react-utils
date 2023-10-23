@@ -16,41 +16,41 @@ function isEmpty(val) {
 const EMAIL_PATTERN = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 export function min(val, minVal) {
     if (isUndefinedOrNull(val) || isEmpty(val)) {
-        return false;
+        return true;
     }
     const vNumeric = numeric(val);
     if (vNumeric) {
         return vNumeric;
     }
     if (getNumeric(val) < minVal) {
-        return false;
+        return true;
     }
     return false;
 }
 export function max(val, maxVal) {
     if (isUndefinedOrNull(val) || isEmpty(val)) {
-        return false;
+        return true;
     }
     const vNumeric = numeric(val);
     if (vNumeric) {
         return vNumeric;
     }
     if (getNumeric(val) > maxVal) {
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }
 export function required(val) {
     if (isUndefinedOrNull(val) || val === '' || isEmpty(val)) {
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }
 export function requiredTrue(val) {
     if (String(val) !== 'true') {
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }
 export function equal(val, comparedValue) {
     const valIsUndefinedOrNull = isUndefinedOrNull(val) || isEmpty(val);
@@ -58,56 +58,56 @@ export function equal(val, comparedValue) {
         isUndefinedOrNull(comparedValue) ||
         isEmpty(comparedValue);
     if (comparedValue && val !== comparedValue && !valIsUndefinedOrNull && !withValIsUndefinedOrNull) {
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }
 export function email(val) {
     if (isUndefinedOrNull(val) || isEmpty(val)) {
-        return false;
+        return true;
     }
     if (!EMAIL_PATTERN.test(String(val).toLowerCase())) {
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }
 export function minLength(val, minLength) {
     if (isUndefinedOrNull(val) || isEmpty(val)) {
-        return false;
+        return true;
     }
     if (String(val).trim().length < minLength) {
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }
 export function maxLength(val, maxLength) {
     if (isUndefinedOrNull(val) || isEmpty(val)) {
-        return false;
+        return true;
     }
     if (String(val).trim().length > maxLength) {
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }
 export function pattern(val, pattern) {
     if (isUndefinedOrNull(val) || isEmpty(val) || !pattern) {
-        return false;
+        return true;
     }
     const p = typeof pattern === 'string' ? new RegExp(pattern) : pattern;
     if (!p.test(String(val))) {
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }
 export function numeric(val) {
     if (isUndefinedOrNull(val) || isEmpty(val)) {
-        return false;
+        return true;
     }
-    return String(val).match(/^\-{0,1}[0-9]+$/) ? true : false;
+    return String(val).match(/^\-{0,1}[0-9]+$/) ? false : true;
 }
 export function decimal(val) {
     if (isUndefinedOrNull(val) || isEmpty(val)) {
-        return false;
+        return true;
     }
-    return String(val).match(/^\d*\.?\d*$/) ? true : false;
+    return String(val).match(/^\d*\.?\d*$/) ? false : true;
 }

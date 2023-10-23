@@ -15,6 +15,7 @@ function isEmpty(val: UseFormValue): boolean {
     if (Array.isArray(val) && !val.length) {
         return true;
     }
+
     return String(val).trim() === '';
 }
 
@@ -23,7 +24,7 @@ const EMAIL_PATTERN =
 
 export function min(val: UseFormValue, minVal: number): boolean {
     if (isUndefinedOrNull(val) || isEmpty(val)) {
-        return false;
+        return true;
     }
 
     const vNumeric = numeric(val);
@@ -32,7 +33,7 @@ export function min(val: UseFormValue, minVal: number): boolean {
     }
 
     if (getNumeric(val) < minVal) {
-        return false;
+        return true;
     }
 
     return false;
@@ -40,7 +41,7 @@ export function min(val: UseFormValue, minVal: number): boolean {
 
 export function max(val: UseFormValue, maxVal: number): boolean {
     if (isUndefinedOrNull(val) || isEmpty(val)) {
-        return false;
+        return true;
     }
 
     const vNumeric = numeric(val);
@@ -49,26 +50,26 @@ export function max(val: UseFormValue, maxVal: number): boolean {
     }
 
     if (getNumeric(val) > maxVal) {
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 export function required(val: UseFormValue): boolean {
     if (isUndefinedOrNull(val) || val === '' || isEmpty(val)) {
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 export function requiredTrue(val: UseFormValue): boolean {
     if (String(val) !== 'true') {
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 export function equal(
@@ -82,21 +83,21 @@ export function equal(
         isEmpty(comparedValue);
 
     if (comparedValue && val !== comparedValue && !valIsUndefinedOrNull && !withValIsUndefinedOrNull) {
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 export function email(val: UseFormValue): boolean {
     if (isUndefinedOrNull(val) || isEmpty(val)) {
-        return false;
+        return true;
     }
     if (!EMAIL_PATTERN.test(String(val).toLowerCase())) {
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 export function minLength(
@@ -104,13 +105,13 @@ export function minLength(
     minLength: number,
 ): boolean {
     if (isUndefinedOrNull(val) || isEmpty(val)) {
-        return false;
+        return true;
     }
     if (String(val).trim().length < minLength) {
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 export function maxLength(
@@ -118,39 +119,39 @@ export function maxLength(
     maxLength: number,
 ): boolean {
     if (isUndefinedOrNull(val) || isEmpty(val)) {
-        return false;
+        return true;
     }
     if (String(val).trim().length > maxLength) {
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 export function pattern(val: UseFormValue, pattern: string | RegExp): boolean {
     if (isUndefinedOrNull(val) || isEmpty(val) || !pattern) {
-        return false;
+        return true;
     }
     const p = typeof pattern === 'string' ? new RegExp(pattern) : pattern;
     if (!p.test(String(val))) {
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 export function numeric(val: UseFormValue): boolean {
     if (isUndefinedOrNull(val) || isEmpty(val)) {
-        return false;
+        return true;
     }
 
-    return String(val).match(/^\-{0,1}[0-9]+$/) ? true : false;
+    return String(val).match(/^\-{0,1}[0-9]+$/) ? false : true;
 }
 
 export function decimal(val: UseFormValue): boolean {
     if (isUndefinedOrNull(val) || isEmpty(val)) {
-        return false;
+        return true;
     }
 
-    return String(val).match(/^\d*\.?\d*$/) ? true : false;
+    return String(val).match(/^\d*\.?\d*$/) ? false : true;
 }
