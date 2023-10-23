@@ -1,14 +1,14 @@
 import { UseFormValue } from ".";
 
-export function getNumeric(val: UseFormValue): number {
+function getNumeric(val: UseFormValue): number {
     return parseInt(String(val).trim(), 10);
 }
 
-export function isUndefinedOrNull(val: UseFormValue): boolean {
+function isUndefinedOrNull(val: UseFormValue): boolean {
     return val === null || val === undefined;
 }
 
-export function isEmpty(val: UseFormValue): boolean {
+function isEmpty(val: UseFormValue): boolean {
     if (typeof val === 'object' && val !== null && Object.keys(val).length === 0) {
         return true;
     }
@@ -18,149 +18,139 @@ export function isEmpty(val: UseFormValue): boolean {
     return String(val).trim() === '';
 }
 
-export const EMAIL_PATTERN =
+const EMAIL_PATTERN =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-export function min(minVal: number, message = `Min ${minVal}`): (val: UseFormValue) => string | null {
-    return (val: UseFormValue) => {
-        if (isUndefinedOrNull(val) || isEmpty(val)) {
-            return null;
-        }
+export function min(val: UseFormValue, minVal: number): boolean {
+    if (isUndefinedOrNull(val) || isEmpty(val)) {
+        return false;
+    }
 
-        const vNumeric = numeric()(val);
-        if (vNumeric) {
-            return vNumeric;
-        }
+    const vNumeric = numeric(val);
+    if (vNumeric) {
+        return vNumeric;
+    }
 
-        if (getNumeric(val) < minVal) {
-            return message;
-        }
-        return null;
-    };
+    if (getNumeric(val) < minVal) {
+        return false;
+    }
+
+    return false;
 }
 
-export function max(maxVal: number, message = `Max ${maxVal}`): (val: UseFormValue) => string | null {
-    return (val: UseFormValue) => {
-        if (isUndefinedOrNull(val) || isEmpty(val)) {
-            return null;
-        }
+export function max(val: UseFormValue, maxVal: number): boolean {
+    if (isUndefinedOrNull(val) || isEmpty(val)) {
+        return false;
+    }
 
-        const vNumeric = numeric()(val);
-        if (vNumeric) {
-            return vNumeric;
-        }
+    const vNumeric = numeric(val);
+    if (vNumeric) {
+        return vNumeric;
+    }
 
-        if (getNumeric(val) > maxVal) {
-            return message;
-        }
-        return null;
-    };
+    if (getNumeric(val) > maxVal) {
+        return false;
+    }
+
+    return true;
 }
 
-export function required(message = 'Value is required'): (val: UseFormValue) => string | null {
-    return (val: UseFormValue): string | null => {
-        if (isUndefinedOrNull(val) || val === '' || isEmpty(val)) {
-            return message;
-        }
-        return null;
-    };
+export function required(val: UseFormValue): boolean {
+    if (isUndefinedOrNull(val) || val === '' || isEmpty(val)) {
+        return false;
+    }
+
+    return true;
 }
 
-export function requiredTrue(message = 'Value must be true'): (val: UseFormValue) => string | null {
-    return (val: UseFormValue): string | null => {
-        if (String(val) !== 'true') {
-            return message;
-        }
-        return null;
-    };
+export function requiredTrue(val: UseFormValue): boolean {
+    if (String(val) !== 'true') {
+        return false;
+    }
+
+    return true;
 }
 
-export function equal<T>(
-    withName: string,
-    message = 'Values must be equal',
-): (val: UseFormValue, data: T) => string | null {
-    return (val: UseFormValue, data: T): string | null => {
-        const valIsUndefinedOrNull = isUndefinedOrNull(val) || isEmpty(val);
-        const withValIsUndefinedOrNull =
-            !data ||
-            isUndefinedOrNull(data[withName as keyof T] as UseFormValue) ||
-            isEmpty(data[withName as keyof T] as UseFormValue);
-        if (data && val !== data[withName as keyof T] && !valIsUndefinedOrNull && !withValIsUndefinedOrNull) {
-            return message;
-        }
-        return null;
-    };
+export function equal(
+    val: UseFormValue,
+    comparedValue: UseFormValue,
+): boolean {
+    const valIsUndefinedOrNull = isUndefinedOrNull(val) || isEmpty(val);
+    const withValIsUndefinedOrNull =
+        !comparedValue ||
+        isUndefinedOrNull(comparedValue) ||
+        isEmpty(comparedValue);
+
+    if (comparedValue && val !== comparedValue && !valIsUndefinedOrNull && !withValIsUndefinedOrNull) {
+        return false;
+    }
+
+    return true;
 }
 
-export function email(message = 'Invalid email'): (val: UseFormValue) => string | null {
-    return (val: UseFormValue): string | null => {
-        if (isUndefinedOrNull(val) || isEmpty(val)) {
-            return null;
-        }
-        if (!EMAIL_PATTERN.test(String(val).toLowerCase())) {
-            return message;
-        }
-        return null;
-    };
+export function email(val: UseFormValue): boolean {
+    if (isUndefinedOrNull(val) || isEmpty(val)) {
+        return false;
+    }
+    if (!EMAIL_PATTERN.test(String(val).toLowerCase())) {
+        return false;
+    }
+
+    return true;
 }
 
 export function minLength(
+    val: UseFormValue,
     minLength: number,
-    message = `Min length ${minLength}`,
-): (val: UseFormValue) => string | null {
-    return (val: UseFormValue) => {
-        if (isUndefinedOrNull(val) || isEmpty(val)) {
-            return null;
-        }
-        if (String(val).trim().length < minLength) {
-            return message;
-        }
-        return null;
-    };
+): boolean {
+    if (isUndefinedOrNull(val) || isEmpty(val)) {
+        return false;
+    }
+    if (String(val).trim().length < minLength) {
+        return false;
+    }
+
+    return true;
 }
 
 export function maxLength(
+    val: UseFormValue,
     maxLength: number,
-    message = `Max length ${maxLength}`,
-): (val: UseFormValue) => string | null {
-    return (val: UseFormValue) => {
-        if (isUndefinedOrNull(val) || isEmpty(val)) {
-            return null;
-        }
-        if (String(val).trim().length > maxLength) {
-            return message;
-        }
-        return null;
-    };
+): boolean {
+    if (isUndefinedOrNull(val) || isEmpty(val)) {
+        return false;
+    }
+    if (String(val).trim().length > maxLength) {
+        return false;
+    }
+
+    return true;
 }
 
-export function pattern(pattern: string | RegExp, message = 'Invalid pattern'): (val: UseFormValue) => string | null {
-    return (val: UseFormValue) => {
-        if (isUndefinedOrNull(val) || isEmpty(val) || !pattern) {
-            return null;
-        }
-        const p = typeof pattern === 'string' ? new RegExp(pattern) : pattern;
-        if (!p.test(String(val))) {
-            return message;
-        }
-        return null;
-    };
+export function pattern(val: UseFormValue, pattern: string | RegExp): boolean {
+    if (isUndefinedOrNull(val) || isEmpty(val) || !pattern) {
+        return false;
+    }
+    const p = typeof pattern === 'string' ? new RegExp(pattern) : pattern;
+    if (!p.test(String(val))) {
+        return false;
+    }
+
+    return true;
 }
 
-export function numeric(message = 'Value must be numeric'): (val: UseFormValue) => string | null {
-    return (val: UseFormValue) => {
-        if (isUndefinedOrNull(val) || isEmpty(val)) {
-            return null;
-        }
-        return String(val).match(/^\-{0,1}[0-9]+$/) ? null : message;
-    };
+export function numeric(val: UseFormValue): boolean {
+    if (isUndefinedOrNull(val) || isEmpty(val)) {
+        return false;
+    }
+
+    return String(val).match(/^\-{0,1}[0-9]+$/) ? true : false;
 }
 
-export function decimal(message = 'Value must be decimal'): (val: UseFormValue) => string | null {
-    return (val: UseFormValue) => {
-        if (isUndefinedOrNull(val) || isEmpty(val)) {
-            return null;
-        }
-        return String(val).match(/^\d*\.?\d*$/) ? null : message;
-    };
+export function decimal(val: UseFormValue): boolean {
+    if (isUndefinedOrNull(val) || isEmpty(val)) {
+        return false;
+    }
+
+    return String(val).match(/^\d*\.?\d*$/) ? true : false;
 }
