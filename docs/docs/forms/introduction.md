@@ -29,9 +29,9 @@ export const App = () => {
       <h2>Example Form</h2>
       <form onSubmit={submit}>
         {/* use built-in native wrapper for native elements */}
-        <input {...native(field('firstName'))} placeholder="First name" />
-        <input {...native(field('lastName'))} placeholder="Last name" />
-        <input {...native(field('email'))} placeholder="Email" />
+        <input {...register(field('firstName'))} placeholder="First name" />
+        <input {...register(field('lastName'))} placeholder="Last name" />
+        <input {...register(field('email'))} placeholder="Email" />
         <button>Submit</button>
       </form>
     </div>
