@@ -15,3 +15,4 @@ export type FormFieldRefs<T extends object> = {
 };
 export type PromiseAble<T> = T | Promise<T>;
 export type Override<T, P> = Omit<T, keyof P> & P;
+export type UseFormValue = undefined | null | string | number | boolean | string[] | number[] | Record<string, unknown>;
