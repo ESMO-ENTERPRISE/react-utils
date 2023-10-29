@@ -64,12 +64,12 @@ export const App = () => {
     <div>
       <h2>Form Validation - React Happy Form</h2>
       <form onSubmit={submit}>
-        <input {...native(field('firstName'))} placeholder="First name" />
+        <input {...register(field('firstName'))} placeholder="First name" />
         {/* show field error */}
         {hasError('firstName') && <span>{getError('firstName')}</span>}
-        <input {...native(field('lastName'))} placeholder="Last name" />
+        <input {...register(field('lastName'))} placeholder="Last name" />
         {hasError('lastName') && <span>{getError('lastName')}</span>}
-        <input {...native(field('email'))} placeholder="Email" />
+        <input {...register(field('email'))} placeholder="Email" />
         {hasError('email') && <span>{getError('email')}</span>}
         <button>Submit</button>
       </form>

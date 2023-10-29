@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # Third party integration
@@ -52,17 +52,17 @@ export const App = () => {
         <VStack spacing={4} align="flex-start">
           <FormControl isInvalid={hasError('firstName')}>
             <FormLabel htmlFor="firstName">First Name</FormLabel>
-            <Input id="firstName" {...native(field('firstName'))} />
+            <Input id="firstName" {...register(field('firstName'))} />
             <FormErrorMessage>{getError('firstName')}</FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={hasError('lastName')}>
             <FormLabel htmlFor="lastName">Last Name</FormLabel>
-            <Input id="lastName" {...native(field('lastName'))} />
+            <Input id="lastName" {...register(field('lastName'))} />
             <FormErrorMessage>{getError('lastName')}</FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={hasError('email')}>
             <FormLabel htmlFor="email">Email</FormLabel>
-            <Input id="email" {...native(field('email'))} />
+            <Input id="email" {...register(field('email'))} />
             <FormErrorMessage>{getError('email')}</FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={hasError('gender')}>
