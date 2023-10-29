@@ -32,7 +32,6 @@ export type Field = {
   errors: string[];
 };
 
-<<<<<<< HEAD
 export type ErrorTypes = 'required' | 'pattern' | 'min' | 'max' | 'minLength' | 'maxLength';
 
 export type ErrorMessages = {
@@ -59,9 +58,3 @@ export type FormState<T> = {
     [K in keyof T]: ErrorMessages;
   };
 };
-=======
-export type PromiseAble<T> = T | Promise<T>;
-export type Override<T, P> = Omit<T, keyof P> & P;
-
-export type UseFormValue = undefined | null | string | number | boolean | string[] | number[] | Record<string, unknown>;
->>>>>>> 11d383f82e2f2e4084db777572e8f1ed978c8579

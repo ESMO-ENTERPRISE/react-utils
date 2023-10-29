@@ -57,7 +57,6 @@ const useFormValidator = (setup) => {
         const newFormState = runSetup(setup);
         setFormState(newFormState);
         setSetupComplete(true);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setup]);
     useEffect(() => {
         if (setupComplete && newValues && formState) {

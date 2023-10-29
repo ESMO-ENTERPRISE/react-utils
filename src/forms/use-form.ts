@@ -90,7 +90,6 @@ const useFormValidator = <T>(setup: ValidatorSetup<T>): UseFormValidator<T> => {
     const newFormState = runSetup(setup);
     setFormState(newFormState);
     setSetupComplete(true);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setup]);
 
   useEffect(() => {
@@ -253,8 +252,4 @@ const useFormValidator = <T>(setup: ValidatorSetup<T>): UseFormValidator<T> => {
   };
 };
 
-<<<<<<< HEAD
 export default useFormValidator;
-=======
-export type Form<T extends object> = ReturnType<typeof useForm<T>>;
->>>>>>> 11d383f82e2f2e4084db777572e8f1ed978c8579
