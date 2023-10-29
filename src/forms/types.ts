@@ -1,28 +1,60 @@
-import { Path } from "../object-path/types";
-
-export type StandardFieldRef = {
-  focus: () => void;
+export type Validation<T> = {
+  defaultValue?: T[keyof T] | '';
+  required?: boolean;
+  pattern?: RegExp;
+  min?: number;
+  max?: number;
+  minLength?: number;
+  maxLength?: number;
+  errorMessages?: {
+    required?: string;
+    pattern?: string;
+    min?: string;
+    max?: string;
+    minLength?: string;
+    maxLength?: string;
+  };
 };
 
-export type StandardFieldProps<T = any> = {
-  value: T;
-  onChange: (value: T) => void;
-  // use for validate after touched
-  onBlur?: () => void;
-  // use for auto focus
-  ref?: any;
+export type ValidatorSetup<T> = {
+  [K in keyof T]: Validation<T>;
 };
 
-export type CovertToStandardFieldProps<T, P = any> = Override<
-  T,
-  StandardFieldProps<P>
->;
+export type ValidatorFn<T, K extends keyof T> = (value: T[K] | '') => { type: ErrorTypes; isValid: boolean };
 
-// use map (not object) to keep errors order
-export type FormErrors<T extends object> = Map<Path<T>, any>;
-export type FormFieldRefs<T extends object> = {
-  [K in Path<T>]?: any;
+export type Field = {
+  touched: boolean;
+  dirty: boolean;
+  hasError: boolean;
+  showError: boolean;
+  isRequired: boolean;
+  isValid: boolean;
+  errors: string[];
 };
 
-export type PromiseAble<T> = T | Promise<T>;
-export type Override<T, P> = Omit<T, keyof P> & P;
+export type ErrorTypes = 'required' | 'pattern' | 'min' | 'max' | 'minLength' | 'maxLength';
+
+export type ErrorMessages = {
+  required: string;
+  pattern: string;
+  min: string;
+  max: string;
+  minLength: string;
+  maxLength: string;
+};
+
+export type FormState<T> = {
+  values: {
+    [K in keyof T]: T[K] | '';
+  };
+  fields: {
+    [K in keyof T]: Field;
+  };
+  validationRules: {
+    [K in keyof T]: ValidatorFn<T, K>[];
+  };
+  isValid: boolean;
+  errorMessages: {
+    [K in keyof T]: ErrorMessages;
+  };
+};

@@ -1,36 +1,21 @@
-import { FormEvent } from 'react';
-import { Path, PathValue } from '../object-path';
-import { FormErrors, StandardFieldProps, FormFieldRefs, PromiseAble } from './types';
-type UseFormOptions<T extends object> = {
-    defaultValues?: T;
-    onValidate?: (values: T) => PromiseAble<FormErrors<T>>;
-    onSubmit?: (values: T) => PromiseAble<void>;
-    isValidateOnChange?: boolean;
-    isValidateAfterTouch?: boolean;
-    isAutoFocus?: boolean;
+/// <reference types="react" />
+import { ValidatorSetup, Field } from './types';
+type UseFormValidator<T> = {
+    fields: {
+        [K in keyof T]: Field;
+    };
+    handleBlur: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+    handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+    isValid: boolean;
+    reset: () => void;
+    setupComplete: boolean;
+    setValues: React.Dispatch<React.SetStateAction<{
+        [K in keyof T]?: T[K] | undefined;
+    } | null>>;
+    validate: () => void;
+    values: {
+        [K in keyof T]: T[K] | '';
+    };
 };
-type FieldOptions<T extends object> = Pick<UseFormOptions<T>, 'isValidateAfterTouch' | 'isAutoFocus'>;
-export declare const useForm: <T extends object>(options?: UseFormOptions<T> | undefined) => {
-    field: (path: Path<T>, options?: FieldOptions<T> | undefined) => StandardFieldProps;
-    getValue: <P extends Path<T>>(path: P) => PathValue<T, P>;
-    setValue: <P_1 extends Path<T>>(path: P_1, value: PathValue<T, P_1>) => void;
-    setValues: (values: T) => void;
-    touch: (path: Path<T>) => void;
-    getError: (path: Path<T>) => any;
-    hasError: (path: Path<T>) => boolean;
-    setError: (path: Path<T>, error?: any) => void;
-    setErrors: (errors: FormErrors<T>) => void;
-    fieldRefs: FormFieldRefs<T>;
-    getFieldRef: (path: Path<T>) => FormFieldRefs<T>[Path<T>];
-    setFieldRef: (path: Path<T>, ref: any) => void;
-    setIsSubmitted: (isSubmitted: boolean) => void;
-    setIsSubmitting: (isSubmitting: boolean) => void;
-    submit: (event?: FormEvent) => Promise<void>;
-    values: T;
-    errors: FormErrors<T>;
-    touched: Path<T>[];
-    isSubmitted: boolean;
-    isSubmitting: boolean;
-};
-export type Form<T extends object> = ReturnType<typeof useForm<T>>;
-export {};
+declare const useFormValidator: <T>(setup: ValidatorSetup<T>) => UseFormValidator<T>;
+export default useFormValidator;
