@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { validateGreaterThanOrEqualToMin, validateLessThanOrEqualToMax, validateLengthIsGreaterThanOrEqualToMin, validateLengthIsLessThanOrEqualToMax, validateIsRequired, validatePattern, } from './validators';
-import { checkIfFieldIsValid, checkIfAllFieldsAreValid, checkIfFormIsValid } from './checks';
+import { useState, useEffect } from "react";
+import { validateGreaterThanOrEqualToMin, validateLessThanOrEqualToMax, validateLengthIsGreaterThanOrEqualToMin, validateLengthIsLessThanOrEqualToMax, validateIsRequired, validatePattern, } from "./validators";
+import { checkIfFieldIsValid, checkIfAllFieldsAreValid, checkIfFormIsValid, } from "./checks";
 const cloneFormState = (formState) => ({
     values: { ...formState.values },
     fields: { ...formState.fields },
@@ -16,12 +16,12 @@ const defaultFormState = {
     errorMessages: {},
 };
 const defaultErrorMessages = {
-    required: 'This field is required',
-    pattern: 'This field is does not match the correct pattern',
-    min: 'This field does not exceed the min value',
-    max: 'This field exceeds the max value',
-    minLength: 'This field does not exceed the min length',
-    maxLength: 'This field exceeds the max length',
+    required: "This field is required",
+    pattern: "This field is does not match the correct pattern",
+    min: "This field does not exceed the min value",
+    max: "This field exceeds the max value",
+    minLength: "This field does not exceed the min length",
+    maxLength: "This field exceeds the max length",
 };
 const getErrorMessages = (errors, errorMessages) => errors.map((error) => errorMessages[error]);
 const getValidationFns = (validations) => {
@@ -47,7 +47,7 @@ const getValidationFns = (validations) => {
     }
     return validatorFns;
 };
-const useFormValidator = (setup) => {
+export const useForm = (setup) => {
     const [formState, setFormState] = useState(defaultFormState);
     const [initialSetup, setInitialSetup] = useState({});
     const [setupComplete, setSetupComplete] = useState(false);
@@ -73,7 +73,9 @@ const useFormValidator = (setup) => {
                     hasError,
                     showError: hasError,
                     isValid: !hasError,
-                    errors: hasError ? getErrorMessages(errors, newFormState.errorMessages[name]) : [],
+                    errors: hasError
+                        ? getErrorMessages(errors, newFormState.errorMessages[name])
+                        : [],
                 };
             });
             // Check if the form is valid
@@ -91,19 +93,23 @@ const useFormValidator = (setup) => {
             errorMessages: {},
         };
         Object.entries(validatorSetup).forEach(([name, validations]) => {
-            const { defaultValue = '', errorMessages, max, maxLength, min, minLength, required } = validations;
+            const { defaultValue = "", errorMessages, max, maxLength, min, minLength, required, } = validations;
             // A field cannot have both max and maxLength or min and minLength
             if ((min || max) && (minLength || maxLength)) {
-                throw new Error('A field can only have min/max OR minLength/maxLength validation');
+                throw new Error("A field can only have min/max OR minLength/maxLength validation");
             }
             // Setup validator functions
-            newFormState.validationRules[name] = getValidationFns(validations);
+            newFormState.validationRules[name] =
+                getValidationFns(validations);
             // Setup error messages
-            newFormState.errorMessages[name] = { ...defaultErrorMessages, ...errorMessages };
+            newFormState.errorMessages[name] = {
+                ...defaultErrorMessages,
+                ...errorMessages,
+            };
             // Check if field is valid
             const { hasError, errors } = checkIfFieldIsValid(newFormState.validationRules[name], defaultValue);
             // Set isDirty true if defaultValue is anything other than null or empty string
-            const isDirty = defaultValue !== null && defaultValue !== '';
+            const isDirty = defaultValue !== null && defaultValue !== "";
             // Set value to default value
             newFormState.values[name] = defaultValue;
             // Set the field
@@ -114,7 +120,9 @@ const useFormValidator = (setup) => {
                 showError: isDirty && hasError,
                 isRequired: Boolean(required),
                 isValid: !hasError && isDirty,
-                errors: hasError ? getErrorMessages(errors, newFormState.errorMessages[name]) : [],
+                errors: hasError
+                    ? getErrorMessages(errors, newFormState.errorMessages[name])
+                    : [],
             };
         });
         // Check if the form is valid
@@ -141,7 +149,7 @@ const useFormValidator = (setup) => {
         // Determine if the field is dirty
         const isDirty = previousFieldState.dirty || // Dirty if previously dirty
             (!previousFieldState.dirty && // OR not previously dirty
-                value !== '' &&
+                value !== "" &&
                 value !== null); // AND has a potentially valid value
         // Set the field
         const newFieldState = {
@@ -150,7 +158,9 @@ const useFormValidator = (setup) => {
             dirty: isDirty,
             isValid: !hasError && isDirty,
             hasError,
-            errors: hasError ? getErrorMessages(errors, newFormState.errorMessages[name]) : [],
+            errors: hasError
+                ? getErrorMessages(errors, newFormState.errorMessages[name])
+                : [],
             showError: shouldShowError,
         };
         // Set new field state
@@ -187,4 +197,3 @@ const useFormValidator = (setup) => {
         values: { ...formState.values },
     };
 };
-export default useFormValidator;

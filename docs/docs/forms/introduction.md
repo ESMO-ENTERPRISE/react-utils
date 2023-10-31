@@ -6,35 +6,342 @@ sidebar_position: 1
 
 A form state manage library, which is simple, easy to use and powerful!
 
-## Example
+## Basic Example
 
-```tsx
-// define your form values type
-type FormValues = {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
+```jsx
+const validatorSetup = {
+  firstName: {}, // All fields should have a config object. Name prop of the input is the key.
+  lastName: {
+    required: true, // Add required validation.
+    defaultValue: '', // Set a default value. Setting a default value will trigger validation.
+    minLength: 1, // minLength and maxLength should only validate strings
+    maxLength: 100,
+  },
+  age: {
+    pattern: /\d+/, // Validate with regular expression
+    min: 1, // min and max should only validate numbers
+    max: 100,
+    errorMessages: { // Set custom error messages for each validation.
+      pattern: 'Please enter number for age.',
+    }
+  },
 };
 
-export const App = () => {
-  const { field, submit } = useForm<FormValues>({
-    // handle form submit
-    onSubmit: (values: FormValues) => {
-      alert(JSON.stringify(values));
-    },
-  });
+function App() {
+  const {
+    isValid, // Boolean to indicate if the form is valid.
+    values, // Object with all the values of your form, name prop is the key for each corresponding value.
+    handleChange, // Pass this to all onChange props.
+    handleBlur, // Pass this to all onBlur props.
+    setupComplete, // Boolean to indicate when the setup is complete.
+    fields // Object with additional information about fields of your form, name prop is the key for each corresponding field. More on fields later.
+  } = useForm(validatorSetup); // initialize the hook
 
   return (
-    <div>
-      <h2>Example Form</h2>
-      <form onSubmit={submit}>
-        {/* use built-in native wrapper for native elements */}
-        <input {...register(field('firstName'))} placeholder="First name" />
-        <input {...register(field('lastName'))} placeholder="Last name" />
-        <input {...register(field('email'))} placeholder="Email" />
-        <button>Submit</button>
-      </form>
-    </div>
+    // Wrap the entire form in a check for setupComplete to avoid the "Input elements should not switch from uncontrolled to controlled (or vice versa)" error.
+    {setupComplete && <form>
+      <input
+        name="firstName"
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values.firstName}
+      />
+
+      <input
+        name="lastName"
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values.lastName}
+      />
+      // Each field has a boolean showError (in addition to hasError), and an array of error messages
+      {fields.lastName.showError && fields.lastName.errors[0]}
+
+      <input
+        name="age"
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values.age}
+      />
+      {fields.age.showError && fields.age.errors[0]}
+
+      // Use isValid for things like disabling the submit button
+      <button type="submit" disabled={!isValid}>Submit</button>
+    </form>}
   );
+}
+```
+
+## TypeScript Example
+
+```jsx
+// Define a type with all of the types for your inputs
+type FormFields = {
+  firstName: string,
+  lastName: string,
+  age: number,
+};
+
+// Add the ValidatorSetup type passing in the FormFields you defined
+const validatorSetup: ValidatorSetup<FormFields> = {
+  firstName: {
+    // ...other configuration
+  },
+  lastName: {
+    // ...other configuration
+  },
+  age: {
+    // ...other configuration
+  },
+};
+
+// ...everything else the same
+```
+
+## Other Cool Features
+
+```jsx
+import React from 'react';
+const validatorSetup = {
+  firstName: {
+    // ...other configuration
+  },
+  lastName: {
+    // ...other configuration
+  },
+  age: {
+    // ...other configuration
+  },
+};
+
+function App() {
+  const {
+    isValid,
+    values,
+    handleChange,
+    handleBlur,
+    setupComplete,
+    fields,
+    setValues, // Use this to set all/some of your form fields.
+    validate, // Use this to validate all the fields in your form.
+    reset, // Use this to return the form to its original state.
+    } = useForm(validatorSetup);
+
+  const setDefaultValues = () => {
+    setValues({
+      firstName: 'Boaty',
+      lastName: 'McBoatface',
+      age: 3,
+    });
+  };
+
+  return (
+    {setupComplete && <form>
+      <input
+        name="firstName"
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values.firstName}
+      />
+
+      <input
+        name="lastName"
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values.lastName}
+      />
+      {fields.lastName.showError && fields.lastName.errors[0]}
+
+      <input
+        name="age"
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values.age}
+      />
+      {fields.age.showError && fields.age.errors[0]}
+
+      <button type="submit" disabled={!isValid}>Submit</button>
+
+      // The validate function will set showError to true for all fields that have any errors.
+      <button type="button" onClick={validate}>Validate</button>
+
+      // The setValues function will set values based on name of the field, and validate each field, setting show error to true on any field with errors.
+      <button type="button" onClick={setDefaultValues}>Set Values</button>
+
+      // The reset function will reset any errors or values, and make the form the same as when it was initially loaded.
+      <button type="button" onClick={reset}>Reset</button>
+    </form>}
+  );
+}
+```
+
+## Checkboxes and Radio Buttons
+
+Checkboxes and radio buttons work a little bit differently than text inputs. You need to set the checked property so the UI reflects the values set using setValues and reset functions.
+
+```jsx
+const validatorSetup = {
+  checkboxField: {},
+  radioField: {},
+};
+
+function App() {
+  const { values, handleChange, handleBlur } = useForm(validatorSetup);
+
+  return (
+    <form>
+      <input
+        type="radio"
+        name="radioField"
+        value="radio"
+        checked={values.radioField === "radio"} // Set checked property like this.
+        onChange={handleChange}
+        onBlur={handleBlur}
+      />
+
+      <input
+        type="checkbox"
+        name="checkboxField"
+        value="checkbox"
+        checked={values.checkboxField === "checkbox"} // Set checked property like this.
+        onChange={handleChange}
+        onBlur={handleBlur}
+      />
+    </form>
+  );
+}
+```
+
+## More on Fields
+
+A field is defined by this type in TypeScript:
+
+```ts
+type Field = {
+  touched: boolean;
+  dirty: boolean;
+  hasError: boolean;
+  showError: boolean;
+  isRequired: boolean;
+  isValid: boolean;
+  errors: string[];
 };
 ```
+
+Let's look at each of these properties in more detail.
+
+- touched: Set to `true` after a field has been blurred once.
+- dirty: Set to `true` after a field receives input (setting a defaultValue or using setValues function also counts).
+- hasError: Set to `true` if a field has an error. Validations are run immediately during setup, so unless there are no validations, or a valid defaultValue is set, this will be `true` initially.
+- showError: Set to `true` when (in the opinion of this library) you should display error state and error messages. If you don't agree, you can create your own logic for when to show errors using a combination of hasError/touched/dirty.
+- isRequired: Set to `true` if the field has a required validation.
+- isValid: Set to `true` if the field has no errors.
+
+## The useFormValidation Hook
+
+The return value of the hook is defined by this type in TypeScript:
+
+```ts
+type UseFormValidator<T> = {
+  fields: {
+    [K in keyof T]: Field;
+  };
+  handleBlur: (
+    event: React.FocusEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => void;
+  handleChange: (
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => void;
+  isValid: boolean;
+  reset: () => void;
+  setupComplete: boolean;
+  setValues: React.Dispatch<
+    React.SetStateAction<{ [K in keyof T]?: T[K] | undefined } | null>
+  >;
+  validate: () => void;
+  values: {
+    [K in keyof T]: T[K] | "";
+  };
+};
+```
+
+Let's look at each of these properties in more detail.
+
+- fields: An object with the name of each field in the form as a key, with an object of type Field (see above) as the value.
+- handleBlur: Blur event handler, which sets the `touched` property to `true`.
+- handleChange: Change event handler, which updates the values, and runs validations on each field.
+- isValid: Boolean set to `true` when all the fields in the form are valid.
+- reset: Returns the form to its original state.
+- setupComplete: Boolean to indicate when the setup is complete.
+- setValues: Sets all/some of your form fields.
+- validate: Validates all the fields in your form.
+- values: Object with all the values of your form, name prop is the key for each corresponding value.
+
+## More on Configuration
+
+The validator configuration is defined by these types in TypeScript:
+
+```ts
+type ValidatorSetup<T> = {
+  [K in keyof T]: Validation<T>;
+};
+
+type Validation<T> = {
+  defaultValue?: T[keyof T] | "";
+  required?: boolean;
+  pattern?: RegExp;
+  min?: number;
+  max?: number;
+  minLength?: number;
+  maxLength?: number;
+  errorMessages?: {
+    required?: string;
+    pattern?: string;
+    min?: string;
+    max?: string;
+    minLength?: string;
+    maxLength?: string;
+  };
+};
+```
+
+Let's look at each of these properties in more detail.
+
+- defaultValue: Initial value, if any, that you would like to set the field to have. If there is no defaultValue, it will default to an empty string.
+- required: Set to true if the field is required.
+- pattern: Regular expression to validate against the value.
+- min: A numerical minimum to validate against the value. Value must be a number.
+- max: A numerical maximum to validate against the value. Value must be a number.
+- minLength: A minimum length of characters validate against the value. Value must be a string.
+- maxLength: A maximum length of characters validate against the value. Value must be a string.
+- errorMessages: An object, with keys for each type of validation, for setting custom error messages. See default error messages in the next section.
+
+## Default Error Messages
+
+By default, each validation type have a different default message.
+
+- required: 'This field is required'
+- pattern: 'This field is does not match the correct pattern'
+- min: 'This field does not exceed the min value'
+- max: 'This field exceeds the max value'
+- minLength: 'This field does not exceed the min length'
+- maxLength: 'This field exceeds the max length'
+
+## Setting Multiple Validation Rules
+
+In most cases, you will only need one validation rule.
+
+### pattern
+
+If you have a pattern rule on a field, you probably don't need required as well (unless your regular expression matches an empty string).
+
+### min and minLength
+
+Unless min or minLength is set to 0, you won't need to also set as required as well.
+
+### max and maxLength
+
+For max and maxLength, you may want to add required as well, or a min/minLength.

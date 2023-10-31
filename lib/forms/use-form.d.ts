@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { ValidatorSetup, Field } from './types';
+import { ValidatorSetup, Field } from "./types";
 type UseFormValidator<T> = {
     fields: {
         [K in keyof T]: Field;
@@ -14,8 +14,8 @@ type UseFormValidator<T> = {
     } | null>>;
     validate: () => void;
     values: {
-        [K in keyof T]: T[K] | '';
+        [K in keyof T]: T[K] | "";
     };
 };
-declare const useFormValidator: <T>(setup: ValidatorSetup<T>) => UseFormValidator<T>;
-export default useFormValidator;
+export declare const useForm: <T>(setup: ValidatorSetup<T>) => UseFormValidator<T>;
+export {};

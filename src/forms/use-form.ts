@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   validateGreaterThanOrEqualToMin,
   validateLessThanOrEqualToMax,
@@ -6,9 +6,21 @@ import {
   validateLengthIsLessThanOrEqualToMax,
   validateIsRequired,
   validatePattern,
-} from './validators';
-import { checkIfFieldIsValid, checkIfAllFieldsAreValid, checkIfFormIsValid } from './checks';
-import { ValidatorFn, FormState, ValidatorSetup, Validation, ErrorMessages, ErrorTypes, Field } from './types';
+} from "./validators";
+import {
+  checkIfFieldIsValid,
+  checkIfAllFieldsAreValid,
+  checkIfFormIsValid,
+} from "./checks";
+import {
+  ValidatorFn,
+  FormState,
+  ValidatorSetup,
+  Validation,
+  ErrorMessages,
+  ErrorTypes,
+  Field,
+} from "./types";
 
 const cloneFormState = <T>(formState: FormState<T>): FormState<T> => ({
   values: { ...formState.values },
@@ -27,17 +39,22 @@ const defaultFormState = {
 };
 
 const defaultErrorMessages = {
-  required: 'This field is required',
-  pattern: 'This field is does not match the correct pattern',
-  min: 'This field does not exceed the min value',
-  max: 'This field exceeds the max value',
-  minLength: 'This field does not exceed the min length',
-  maxLength: 'This field exceeds the max length',
+  required: "This field is required",
+  pattern: "This field is does not match the correct pattern",
+  min: "This field does not exceed the min value",
+  max: "This field exceeds the max value",
+  minLength: "This field does not exceed the min length",
+  maxLength: "This field exceeds the max length",
 };
 
-const getErrorMessages = (errors: ErrorTypes[], errorMessages: ErrorMessages): string[] => errors.map((error) => errorMessages[error]);
+const getErrorMessages = (
+  errors: ErrorTypes[],
+  errorMessages: ErrorMessages
+): string[] => errors.map((error) => errorMessages[error]);
 
-const getValidationFns = <T>(validations: Validation<T>): ValidatorFn<T, keyof T>[] => {
+const getValidationFns = <T>(
+  validations: Validation<T>
+): ValidatorFn<T, keyof T>[] => {
   const { max, maxLength, min, minLength, pattern, required } = validations;
 
   const validatorFns: ValidatorFn<T, keyof T>[] = [];
@@ -67,23 +84,39 @@ type UseFormValidator<T> = {
   fields: {
     [K in keyof T]: Field;
   };
-  handleBlur: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
-  handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  handleBlur: (
+    event: React.FocusEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => void;
+  handleChange: (
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => void;
   isValid: boolean;
   reset: () => void;
   setupComplete: boolean;
-  setValues: React.Dispatch<React.SetStateAction<{ [K in keyof T]?: T[K] | undefined } | null>>;
+  setValues: React.Dispatch<
+    React.SetStateAction<{ [K in keyof T]?: T[K] | undefined } | null>
+  >;
   validate: () => void;
   values: {
-    [K in keyof T]: T[K] | '';
+    [K in keyof T]: T[K] | "";
   };
 };
 
-const useFormValidator = <T>(setup: ValidatorSetup<T>): UseFormValidator<T> => {
-  const [formState, setFormState] = useState<FormState<T>>(defaultFormState as FormState<T>);
-  const [initialSetup, setInitialSetup] = useState<ValidatorSetup<T>>({} as ValidatorSetup<T>);
+export const useForm = <T>(setup: ValidatorSetup<T>): UseFormValidator<T> => {
+  const [formState, setFormState] = useState<FormState<T>>(
+    defaultFormState as FormState<T>
+  );
+  const [initialSetup, setInitialSetup] = useState<ValidatorSetup<T>>(
+    {} as ValidatorSetup<T>
+  );
   const [setupComplete, setSetupComplete] = useState(false);
-  const [newValues, setNewValues] = useState<{ [K in keyof T]?: T[K] } | null>(null);
+  const [newValues, setNewValues] = useState<{ [K in keyof T]?: T[K] } | null>(
+    null
+  );
 
   useEffect(() => {
     setInitialSetup(setup);
@@ -98,10 +131,13 @@ const useFormValidator = <T>(setup: ValidatorSetup<T>): UseFormValidator<T> => {
 
       Object.entries(newValues).forEach(([name, value]) => {
         // Check if field is valid
-        const { hasError, errors } = checkIfFieldIsValid(newFormState.validationRules[name as keyof T], value as T[keyof T] | '');
+        const { hasError, errors } = checkIfFieldIsValid(
+          newFormState.validationRules[name as keyof T],
+          value as T[keyof T] | ""
+        );
 
         // Set new value
-        newFormState.values[name as keyof T] = value as T[keyof T] | '';
+        newFormState.values[name as keyof T] = value as T[keyof T] | "";
 
         // Set the field
         newFormState.fields[name as keyof T] = {
@@ -110,7 +146,12 @@ const useFormValidator = <T>(setup: ValidatorSetup<T>): UseFormValidator<T> => {
           hasError,
           showError: hasError,
           isValid: !hasError,
-          errors: hasError ? getErrorMessages(errors, newFormState.errorMessages[name as keyof T]) : [],
+          errors: hasError
+            ? getErrorMessages(
+                errors,
+                newFormState.errorMessages[name as keyof T]
+              )
+            : [],
         };
       });
 
@@ -131,40 +172,64 @@ const useFormValidator = <T>(setup: ValidatorSetup<T>): UseFormValidator<T> => {
       errorMessages: {},
     } as FormState<T>;
 
-    Object.entries<Validation<T>>(validatorSetup).forEach(([name, validations]) => {
-      const { defaultValue = '', errorMessages, max, maxLength, min, minLength, required } = validations;
+    Object.entries<Validation<T>>(validatorSetup).forEach(
+      ([name, validations]) => {
+        const {
+          defaultValue = "",
+          errorMessages,
+          max,
+          maxLength,
+          min,
+          minLength,
+          required,
+        } = validations;
 
-      // A field cannot have both max and maxLength or min and minLength
-      if ((min || max) && (minLength || maxLength)) {
-        throw new Error('A field can only have min/max OR minLength/maxLength validation');
+        // A field cannot have both max and maxLength or min and minLength
+        if ((min || max) && (minLength || maxLength)) {
+          throw new Error(
+            "A field can only have min/max OR minLength/maxLength validation"
+          );
+        }
+
+        // Setup validator functions
+        newFormState.validationRules[name as keyof T] =
+          getValidationFns(validations);
+
+        // Setup error messages
+        newFormState.errorMessages[name as keyof T] = {
+          ...defaultErrorMessages,
+          ...errorMessages,
+        };
+
+        // Check if field is valid
+        const { hasError, errors } = checkIfFieldIsValid(
+          newFormState.validationRules[name as keyof T],
+          defaultValue
+        );
+
+        // Set isDirty true if defaultValue is anything other than null or empty string
+        const isDirty = defaultValue !== null && defaultValue !== "";
+
+        // Set value to default value
+        newFormState.values[name as keyof T] = defaultValue;
+
+        // Set the field
+        newFormState.fields[name as keyof T] = {
+          touched: false,
+          dirty: isDirty,
+          hasError,
+          showError: isDirty && hasError, // Show error if the field is dirty
+          isRequired: Boolean(required),
+          isValid: !hasError && isDirty,
+          errors: hasError
+            ? getErrorMessages(
+                errors,
+                newFormState.errorMessages[name as keyof T]
+              )
+            : [],
+        };
       }
-
-      // Setup validator functions
-      newFormState.validationRules[name as keyof T] = getValidationFns(validations);
-
-      // Setup error messages
-      newFormState.errorMessages[name as keyof T] = { ...defaultErrorMessages, ...errorMessages };
-
-      // Check if field is valid
-      const { hasError, errors } = checkIfFieldIsValid(newFormState.validationRules[name as keyof T], defaultValue);
-
-      // Set isDirty true if defaultValue is anything other than null or empty string
-      const isDirty = defaultValue !== null && defaultValue !== '';
-
-      // Set value to default value
-      newFormState.values[name as keyof T] = defaultValue;
-
-      // Set the field
-      newFormState.fields[name as keyof T] = {
-        touched: false,
-        dirty: isDirty,
-        hasError,
-        showError: isDirty && hasError, // Show error if the field is dirty
-        isRequired: Boolean(required),
-        isValid: !hasError && isDirty,
-        errors: hasError ? getErrorMessages(errors, newFormState.errorMessages[name as keyof T]) : [],
-      };
-    });
+    );
 
     // Check if the form is valid
     newFormState.isValid = checkIfFormIsValid<T>(newFormState);
@@ -176,14 +241,21 @@ const useFormValidator = <T>(setup: ValidatorSetup<T>): UseFormValidator<T> => {
     setFormState(newFormState);
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void => {
+  const handleChange = (
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ): void => {
     const newFormState = cloneFormState(formState);
     const { name, value } = event.target;
     // Update value
-    newFormState.values[name as keyof T] = (value as unknown) as T[keyof T] | '';
+    newFormState.values[name as keyof T] = value as unknown as T[keyof T] | "";
 
     // Check if field has any errors
-    const { hasError, errors } = checkIfFieldIsValid(newFormState.validationRules[name as keyof T], (value as unknown) as T[keyof T] | '');
+    const { hasError, errors } = checkIfFieldIsValid(
+      newFormState.validationRules[name as keyof T],
+      value as unknown as T[keyof T] | ""
+    );
 
     // Grab the previous state of the field
     const previousFieldState = newFormState.fields[name as keyof T];
@@ -198,7 +270,7 @@ const useFormValidator = <T>(setup: ValidatorSetup<T>): UseFormValidator<T> => {
     const isDirty =
       previousFieldState.dirty || // Dirty if previously dirty
       (!previousFieldState.dirty && // OR not previously dirty
-        value !== '' &&
+        value !== "" &&
         value !== null); // AND has a potentially valid value
 
     // Set the field
@@ -208,7 +280,9 @@ const useFormValidator = <T>(setup: ValidatorSetup<T>): UseFormValidator<T> => {
       dirty: isDirty,
       isValid: !hasError && isDirty,
       hasError,
-      errors: hasError ? getErrorMessages(errors, newFormState.errorMessages[name as keyof T]) : [],
+      errors: hasError
+        ? getErrorMessages(errors, newFormState.errorMessages[name as keyof T])
+        : [],
       showError: shouldShowError,
     };
 
@@ -220,7 +294,11 @@ const useFormValidator = <T>(setup: ValidatorSetup<T>): UseFormValidator<T> => {
     setFormState(newFormState);
   };
 
-  const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void => {
+  const handleBlur = (
+    event: React.FocusEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ): void => {
     const newFormState = cloneFormState(formState);
     const { name } = event.target;
     const field = newFormState.fields[name as keyof T];
@@ -247,9 +325,8 @@ const useFormValidator = <T>(setup: ValidatorSetup<T>): UseFormValidator<T> => {
     reset,
     setupComplete,
     setValues: setNewValues,
-    validate: (): void => setFormState(checkIfAllFieldsAreValid<T>(cloneFormState(formState))),
+    validate: (): void =>
+      setFormState(checkIfAllFieldsAreValid<T>(cloneFormState(formState))),
     values: { ...formState.values },
   };
 };
-
-export default useFormValidator;
